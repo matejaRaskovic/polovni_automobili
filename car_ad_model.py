@@ -81,9 +81,8 @@ class CarAdModel(nn.Module):
 
         rnn_input = img_features.view(img_features.shape[0], 1, 512)
 
-        rnn_output, h = self.rnn(rnn_input)
-        lin_input = torch.flatten(rnn_output[-1, :])
-
+        rnn_output, (ht, ct) = self.rnn(rnn_input)
+        lin_input = torch.flatten(ht[-1])
         output = self.linear(lin_input)
 
         return output
