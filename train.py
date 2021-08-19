@@ -22,8 +22,7 @@ def feed_forward(net, images, num_imgs, labels, device):
     labels = torch.from_numpy(np.array(labels)).to(device)
 
     total_loss = 0
-    # print(images.shape[0])
-    # print(labels)
+
     for i in range(images.shape[0]):
         imgs_for_sample = images[i, :]  # using only one sample from batch
         imgs_for_sample = imgs_for_sample[0:num_imgs[i], :]  # keeping only valid images - removing the padding
@@ -141,38 +140,38 @@ def main():
 
         # Train phase
         device = torch.device(arg_device)
-        net.train()
-        iterator_train = iter(loader_train)
-        for i in trange(len(loader_train),
-                        desc='Train ep%s' % ith_epoch, position=1):
-
-            args.cur_iter += 1
-            try:
-                next_data = next(iterator_train)
-            except AssertionError:
-                continue
-            images = next_data[0]
-            num_imgs = next_data[1]
-            labels = next_data[2]
-
-            with torch.cuda.amp.autocast():
-                loss = feed_forward(net, images, num_imgs, labels, device)
-                print(loss)
-
-            scaler.scale(loss).backward()
-
-            # Unscales the gradients of optimizer's assigned params in-place
-            scaler.unscale_(optimizer)
-
-            # Since the gradients of optimizer's assigned params are unscaled, clips as usual:
-            nn.utils.clip_grad_norm_(net.parameters(), 3.0, norm_type='inf')
-
-            # optimizer's gradients are already unscaled, so scaler.step does not unscale them,
-            # although it still skips optimizer.step() if the gradients contain infs or NaNs.
-            scaler.step(optimizer)
-
-            # Updates the scale for next iteration.
-            scaler.update()
+        # net.train()
+        # iterator_train = iter(loader_train)
+        # for i in trange(len(loader_train),
+        #                 desc='Train ep%s' % ith_epoch, position=1):
+        #
+        #     args.cur_iter += 1
+        #     try:
+        #         next_data = next(iterator_train)
+        #     except AssertionError:
+        #         continue
+        #     images = next_data[0]
+        #     num_imgs = next_data[1]
+        #     labels = next_data[2]
+        #
+        #     with torch.cuda.amp.autocast():
+        #         loss = feed_forward(net, images, num_imgs, labels, device)
+        #         print(loss)
+        #
+        #     scaler.scale(loss).backward()
+        #
+        #     # Unscales the gradients of optimizer's assigned params in-place
+        #     scaler.unscale_(optimizer)
+        #
+        #     # Since the gradients of optimizer's assigned params are unscaled, clips as usual:
+        #     nn.utils.clip_grad_norm_(net.parameters(), 3.0, norm_type='inf')
+        #
+        #     # optimizer's gradients are already unscaled, so scaler.step does not unscale them,
+        #     # although it still skips optimizer.step() if the gradients contain infs or NaNs.
+        #     scaler.step(optimizer)
+        #
+        #     # Updates the scale for next iteration.
+        #     scaler.update()
 
         # Valid phase
         net.eval()
@@ -191,10 +190,9 @@ def main():
                 num_imgs = next_data[1]
                 labels = next_data[2]
 
-                with torch.cuda.amp.autocast():
+                with torch.cuda.amp.autocast() and torch.no_grad():
                     loss = feed_forward(net, images, num_imgs, labels, device)
                     total_valid_loss += loss
-                    print(total_valid_loss)
 
             # Save best validation loss model
             if total_valid_loss < args.best_valid_loss:
