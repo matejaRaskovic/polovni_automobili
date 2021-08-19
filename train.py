@@ -146,6 +146,7 @@ def main():
                         desc='Train ep%s' % ith_epoch, position=1):
 
             args.cur_iter += 1
+            train_total_loss = 0
             try:
                 next_data = next(iterator_train)
             except AssertionError:
@@ -173,31 +174,33 @@ def main():
             # Updates the scale for next iteration.
             scaler.update()
 
+            train_total_loss += loss.cpu().detach()
+
         # Valid phase
-        net.eval()
-        if args.valid_csv:
-            iterator_valid = iter(loader_valid)
-            total_valid_loss = 0
-            valid_num = 0
-            for i in trange(len(loader_valid),
-                            desc='Valid ep%d' % ith_epoch, position=2):
-
-                try:
-                    next_data = next(iterator_valid)
-                except AssertionError:
-                    continue
-                images = next_data[0]
-                num_imgs = next_data[1]
-                labels = next_data[2]
-
-                with torch.cuda.amp.autocast() and torch.no_grad():
-                    loss = feed_forward(net, images, num_imgs, labels, device)
-                    total_valid_loss += loss
-
-            # Save best validation loss model
-            if total_valid_loss < args.best_valid_loss:
-                args.best_valid_loss = total_valid_loss
-                torch.save(net.state_dict(), os.path.join(args.ckpt, args.id, 'best_valid.pth'))  # this is temporary
+        # net.eval()
+        # if args.valid_csv:
+        #     iterator_valid = iter(loader_valid)
+        #     total_valid_loss = 0
+        #     valid_num = 0
+        #     for i in trange(len(loader_valid),
+        #                     desc='Valid ep%d' % ith_epoch, position=2):
+        #
+        #         try:
+        #             next_data = next(iterator_valid)
+        #         except AssertionError:
+        #             continue
+        #         images = next_data[0]
+        #         num_imgs = next_data[1]
+        #         labels = next_data[2]
+        #
+        #         with torch.cuda.amp.autocast() and torch.no_grad():
+        #             loss = feed_forward(net, images, num_imgs, labels, device)
+        #             total_valid_loss += loss
+        #
+        #     # Save best validation loss model
+        #     if total_valid_loss < args.best_valid_loss:
+        #         args.best_valid_loss = total_valid_loss
+        #         torch.save(net.state_dict(), os.path.join(args.ckpt, args.id, 'best_valid.pth'))  # this is temporary
 
         if ith_epoch % args.save_every == 0:
             torch.save(net.state_dict(),
