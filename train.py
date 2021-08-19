@@ -142,11 +142,11 @@ def main():
         device = torch.device(arg_device)
         net.train()
         iterator_train = iter(loader_train)
+        train_total_loss = 0
         for i in trange(len(loader_train),
                         desc='Train ep%s' % ith_epoch, position=1):
 
             args.cur_iter += 1
-            train_total_loss = 0
             try:
                 next_data = next(iterator_train)
             except AssertionError:
@@ -175,9 +175,10 @@ def main():
             scaler.update()
 
             train_total_loss += loss.cpu().detach()
-            
-            print("\n\n\nTOTAL LOSS: ")
-            print(train_total_loss/1000000)
+
+        print("\n\n\nTOTAL LOSS: ")
+        print(train_total_loss/1000000)
+        print('\n\n')
 
         # Valid phase
         # net.eval()
