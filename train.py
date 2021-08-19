@@ -157,6 +157,7 @@ def main():
 
             with torch.cuda.amp.autocast():
                 loss = feed_forward(net, images, num_imgs, labels, device)
+                print(loss)
 
             scaler.scale(loss).backward()
 
