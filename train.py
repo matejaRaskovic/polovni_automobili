@@ -175,6 +175,9 @@ def main():
             scaler.update()
 
             train_total_loss += loss.cpu().detach()
+            
+            print("\n\n\nTOTAL LOSS: ")
+            print(train_total_loss/1000000)
 
         # Valid phase
         # net.eval()
