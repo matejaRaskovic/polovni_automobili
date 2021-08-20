@@ -5,6 +5,7 @@ import csv
 from multiprocessing import Pool, Manager
 import sys
 sys.setrecursionlimit(25000)
+from time import sleep
 
 manager = Manager()
 data = manager.list()
@@ -13,12 +14,12 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleW
 
 def fetch_a_sample(url):
     global data
+    sleep(0.5)
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
 
     auto = Automobil()
     auto.readFromSoup(soup)
-    # print(vars(auto))
     if vars(auto)['marka'] is None:
         print(url)
     data.append(vars(auto))
