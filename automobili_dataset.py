@@ -11,7 +11,12 @@ import os
 from tqdm import trange
 from collections import namedtuple
 
+from features.car_body_feature import CarBodyFeature
+
+
 class CarAdDataset(Dataset):
+    features = [CarBodyFeature()]
+
     def __init__(self, csv_path):
         """
         Custom dataset example for reading image locations and labels from csv
@@ -24,16 +29,20 @@ class CarAdDataset(Dataset):
         # Read the csv file
         self.data_info = pd.read_csv(csv_path, header=0)
 
-        # self.data_info = self.data_info.loc[self.data_info['cena'].str[-1] == '€']
-        self.data_info = self.data_info[self.data_info['karoserija'].isin(['Limuzina', 'Karavan'])]
+        # data filtering
+        mask = ~self.data_info['marka'].isin([None])
+        for feature in self.features:
+            mask |= feature.validDataMaskFromDF(self.data_info)
+
+        self.data_info = self.data_info[mask]
 
         # First column contains the image paths
         self.ad_ids = np.asarray(self.data_info.iloc[:, 12].astype(str).str[:-2])
         # print(self.ad_ids)
         # Second column is the labels
-        self.labels_str = np.asarray(self.data_info.iloc[:, 5])
-        self.labels = np.zeros(self.labels_str.shape)
-        self.labels = np.where(self.labels_str == 'Limuzina', 1, 0)
+        # self.labels_str = np.asarray(self.data_info.iloc[:, 5])
+        # self.labels = np.zeros(self.labels_str.shape)
+        # self.labels = np.where(self.labels_str == 'Limuzina', 1, 0)
 
         # self.labels = [float(lbl[:-2].replace('.', '')) for lbl in self.labels]
         # Calculate len
@@ -58,7 +67,11 @@ class CarAdDataset(Dataset):
             i += 1
             # print(i)
 
-        return [imgs, num_imgs, self.labels[index]]
+        lbls_dict = {}
+        for feature in self.features:
+            lbls_dict[feature.name()] = feature.nameToClassId(self.data_info[feature.name()][index])
+
+        return [imgs, num_imgs, lbls_dict]
 
     def __len__(self):
         return self.data_len
