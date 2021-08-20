@@ -31,7 +31,7 @@ for url in URLS:
 
 
     keys = data[0].keys()
-    with open('all_cars.csv', 'w', newline='', encoding="utf-8")  as file:
+    with open('all_cars.csv', 'w', newline='', encoding="utf-8") as file:
         dict_writer = csv.DictWriter(file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(data)

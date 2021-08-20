@@ -46,7 +46,7 @@ def download_images_for_url(car_ad_url_and_cnt):
         file.close()
 
     t2 = time.time()
-    print('Finished image ' + str(cnt) + '. Time spent: ' + str(t2 - t1))
+    print('Finished car ad ' + str(cnt) + '. Time spent: ' + str(t2 - t1))
     print('')
 
 
