@@ -18,7 +18,9 @@ def fetch_a_sample(url):
 
     auto = Automobil()
     auto.readFromSoup(soup)
-    print(vars(auto))
+    # print(vars(auto))
+    if auto['marka'] is None:
+        print(url)
     data.append(vars(auto))
     # return vars(auto)
 
