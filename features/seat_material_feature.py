@@ -23,7 +23,7 @@ class SeatMaterialFeature():
         target = target.view((1)).type(torch.LongTensor).to(device)
 
         lossFun = nn.CrossEntropyLoss()
-        vec = vector[:, 0:self.num_classes-1]
+        vec = vector[:, 0:self.num_classes]
 
         if np.random.random(1) < 0.1:
             print(vec)
