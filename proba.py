@@ -32,7 +32,7 @@ def get_data_to_csv():
 
     URLS = URLS_all
 
-    p = Pool(2)
+    p = Pool(32)
     p.map(fetch_a_sample, tuple(URLS))
 
     keys = data[0].keys()
