@@ -33,8 +33,6 @@ def download_images_for_url(car_ad_url_and_cnt):
     os.makedirs('slike', exist_ok=True)
 
     pictures_urls = [dic['caption'] for dic in data]
-    # print("Downloading " + str(len(pictures_urls)) + " images for car " + str(i) + "/" + str(len(urls)) + "...")
-    # i += 1
 
     t1 = time.time()
     for url in pictures_urls:
@@ -63,5 +61,5 @@ def get_images_from_urls(txt_file="all_cars.txt"):
 
 
 if __name__ == '__main__':
-    linkovi = get_images_from_urls()
+    get_images_from_urls()
 

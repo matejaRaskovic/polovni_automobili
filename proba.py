@@ -1,34 +1,34 @@
 import requests
 from bs4 import BeautifulSoup
-import re
 from automobil import Automobil
-import pprint
 import csv
-import pandas as pd
-import time
+from multiprocessing import Pool, Manager
+import sys
+sys.setrecursionlimit(25000)
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
-
-URLS_all = []
-with open('all_cars.txt', 'r') as file:
-    for line in file:
-        URLS_all.append(line)
-
-URLS = URLS_all
-data = []
-i=1
-for url in URLS:
-    print(f"[{i}/{len(URLS)}]")
-    i+=1
+def fetch_a_sample(url):
+    global data
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
 
     auto = Automobil()
     auto.readFromSoup(soup)
-    data.append(vars(auto))
-    del(auto)
+    print(1)
+    return vars(auto)
 
+
+def get_data_to_csv():
+    URLS_all = []
+    with open('all_audi_a4_urls_1.txt', 'r') as file:
+        for line in file:
+            URLS_all.append(line)
+
+    URLS = URLS_all
+
+    p = Pool(32)
+    data = p.map(fetch_a_sample, tuple(URLS))
 
     keys = data[0].keys()
     with open('all_cars.csv', 'w', newline='', encoding="utf-8") as file:
@@ -36,4 +36,6 @@ for url in URLS:
         dict_writer.writeheader()
         dict_writer.writerows(data)
 
-# df = pd.read_csv('audi_a4.csv')
+
+if __name__ == '__main__':
+    get_data_to_csv()
