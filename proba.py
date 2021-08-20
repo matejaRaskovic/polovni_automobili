@@ -21,7 +21,7 @@ def fetch_a_sample(url):
 
 def get_data_to_csv():
     URLS_all = []
-    with open('all_audi_a4_urls_1.txt', 'r') as file:
+    with open('all_cars.txt', 'r') as file:
         for line in file:
             URLS_all.append(line)
 
