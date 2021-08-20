@@ -5,7 +5,6 @@ import time
 import os
 
 from multiprocessing import Pool
-# cnt = 1
 
 
 def createHtmlFile(url, html_file="webpage.html"):
@@ -16,7 +15,9 @@ def createHtmlFile(url, html_file="webpage.html"):
         file.write(soup.prettify())
 
 
-def download_images_for_url(car_ad_url):
+def download_images_for_url(car_ad_url_and_cnt):
+    car_ad_url = car_ad_url_and_cnt[0]
+    cnt = car_ad_url_and_cnt[1]
     car_id = car_ad_url.split('/')[-2]
 
     headers = {
@@ -45,20 +46,19 @@ def download_images_for_url(car_ad_url):
         file.close()
 
     t2 = time.time()
-    # print('Finished. Time spent: ' + str(t2 - t1) + "   Downloaded " + str(cnt))
-    # print('')
+    print('Finished image ' + str(cnt) + '. Time spent: ' + str(t2 - t1))
+    print('')
 
 
 def get_images_from_urls(txt_file="all_cars.txt"):
     with open(txt_file, 'r') as urls_file:
         urls = []
+        i = 1
         for url in urls_file:
-            urls.append(url)
+            urls.append([url, i])
+            i += 1
 
-        print(len(urls))
-
-        p = Pool(2)
-        print(tuple(urls))
+        p = Pool(32)
         p.map(download_images_for_url, tuple(urls))
 
 
