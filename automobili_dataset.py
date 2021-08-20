@@ -14,11 +14,15 @@ from collections import namedtuple
 from features.car_body_feature import CarBodyFeature
 from features.seat_material_feature import SeatMaterialFeature
 from features.car_producer_feature import CarProducerFeature
+from features.car_color_feature import CarColorFeature
+from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
     features = [CarBodyFeature(),
                 SeatMaterialFeature(),
-                CarProducerFeature()]
+                CarProducerFeature(),
+                CarColorFeature(),
+                InteriorColorFeature()]
 
     def __init__(self, csv_path):
         """
