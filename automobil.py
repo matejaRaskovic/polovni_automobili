@@ -15,7 +15,11 @@ class Automobil():
         "menjac": "Menjač",
         "br_vrata" : "Broj vrata",
         "boja": "Boja",
-        "br_oglasa": "Broj oglasa:"
+        "br_oglasa": "Broj oglasa:",
+        "materijal_enterijera": "Materijal enterijera",
+        "boja_enterijera": "Boja enterijera",
+        "broj_sedista": "Broj sedišta",
+        "registrovan_do": "Registrovan do"
         }
     
     def __init__(self):

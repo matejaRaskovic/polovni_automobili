@@ -6,7 +6,10 @@ import re
 # URL pretrage koja se scrape-uje
 # SEARCH_URL = "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&brand=audi&model%5B0%5D=a4&year_from=2015&year_to=2017&chassis%5B0%5D=277&city_distance=0&showOldNew=all&without_price=1"
 # SEARCH_URL = "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&brand=audi&model%5B%5D=a4&price_to=&year_from=&year_to=&showOldNew=all&submit_1=&without_price=1"
-SEARCH_URL = "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&brand=audi&model%5B0%5D=a4&city_distance=0&showOldNew=all&without_price=1"
+# SEARCH_URL = "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&brand=audi&model%5B0%5D=a4&city_distance=0&showOldNew=all&without_price=1"
+
+SEARCH_URL_GENERAL = "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&brand=_BRAND_TO_REPLACE_&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2632&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2573&color%5B1%5D=253&color%5B2%5D=254&color%5B3%5D=2574&color%5B4%5D=255&color%5B5%5D=59&color%5B6%5D=2575&color%5B7%5D=3328&color%5B8%5D=256&color%5B9%5D=2578&color%5B10%5D=57&color%5B11%5D=258&color%5B12%5D=259&color%5B13%5D=260&color%5B14%5D=2577&color%5B15%5D=2576&color%5B16%5D=261&color%5B17%5D=262&color%5B18%5D=263&interior_material%5B0%5D=3830&interior_material%5B1%5D=3831&interior_material%5B2%5D=3832&interior_material%5B3%5D=3833&interior_material%5B4%5D=3834&interior_color%5B0%5D=3836&interior_color%5B1%5D=3837&interior_color%5B2%5D=3838&interior_color%5B3%5D=3839&interior_color%5B4%5D=3840"
+brands = ['volkswagen', 'audi', 'bmw', 'opel', 'peugeot', 'fiat', 'renault', 'mercedes-benz']
 
 def createHtmlFile(url, html_file="webpage.html"):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -58,7 +61,7 @@ def get_cars_from_page_url(url):
     Ova funkcija vraca listu svih URL adresa pojedinacnih vozila (oglasa)
     koji se nalaze na datoj stranici pretrage
     """
-    
+
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -115,17 +118,18 @@ def get_list_of_all_pages(SEARCH_URL):
 
 
 if __name__ == "__main__":
-    
-    all_pages = get_list_of_all_pages(SEARCH_URL)
-    all_cars = []
-    for page_url in all_pages:
-        page_cars = get_cars_from_page_url(page_url)
-        all_cars += page_cars
 
-    createHtmlFile(all_cars[3])
+    all_cars = []
+    for brand in brands:
+        SEARCH_URL = SEARCH_URL_GENERAL.replace('_BRAND_TO_REPLACE_', brand)
+        all_pages = get_list_of_all_pages(SEARCH_URL)
+
+        for page_url in all_pages:
+            page_cars = get_cars_from_page_url(page_url)
+            all_cars += page_cars
     
     # Name of txt file to store URLs of individual cars
-    URLS_FILE_NAME = "all_audi_a4_urls.txt"
+    URLS_FILE_NAME = "all_cars.txt"
     with open(URLS_FILE_NAME, 'w') as file:
         for car in all_cars:
             file.write(car + "\n")
