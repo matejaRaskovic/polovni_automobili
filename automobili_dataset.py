@@ -12,10 +12,11 @@ from tqdm import trange
 from collections import namedtuple
 
 from features.car_body_feature import CarBodyFeature
-
+from features.seat_material_feature import SeatMaterialFeature
 
 class CarAdDataset(Dataset):
-    features = [CarBodyFeature()]
+    features = [CarBodyFeature(),
+                SeatMaterialFeature()]
 
     def __init__(self, csv_path):
         """
