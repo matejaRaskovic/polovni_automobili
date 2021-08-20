@@ -19,7 +19,7 @@ def fetch_a_sample(url):
     auto = Automobil()
     auto.readFromSoup(soup)
     print(vars(auto))
-    data.append(vars(data))
+    data.append(vars(auto))
     # return vars(auto)
 
 
