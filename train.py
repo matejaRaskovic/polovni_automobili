@@ -18,7 +18,7 @@ torch.backends.cudnn.deterministic = True
 
 def feed_forward(net, images, num_imgs, labels, device):
     images = images.to(device)
-    lossFun = nn.L1Loss()
+    lossFun = nn.CrossEntropyLoss()
     labels = torch.from_numpy(np.array(labels)).to(device)
 
     total_loss = 0
@@ -28,7 +28,9 @@ def feed_forward(net, images, num_imgs, labels, device):
         imgs_for_sample = imgs_for_sample[0:num_imgs[i], :]  # keeping only valid images - removing the padding
 
         est = net(imgs_for_sample)
-        loss = lossFun(est, labels[i])
+        est = est.view((1, est.shape[0]))
+        lbl = labels[i].view((1)).type(torch.LongTensor)
+        loss = lossFun(est, lbl)
         total_loss += loss
 
     return total_loss
@@ -157,7 +159,7 @@ def main():
 
             with torch.cuda.amp.autocast():
                 loss = feed_forward(net, images, num_imgs, labels, device)
-                # print(loss)
+                print(loss)
 
             scaler.scale(loss).backward()
 

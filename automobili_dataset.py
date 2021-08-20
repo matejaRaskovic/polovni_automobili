@@ -23,15 +23,19 @@ class CarAdDataset(Dataset):
         self.to_tensor = transforms.ToTensor()
         # Read the csv file
         self.data_info = pd.read_csv(csv_path, header=0)
-        # print(self.data_info.loc[self.data_info['cena'].str[-1] == '€'])
-        self.data_info = self.data_info.loc[self.data_info['cena'].str[-1] == '€']
-        # print(self.data_info[~self.data_info['cena'].str.endswith('€')])
+
+        # self.data_info = self.data_info.loc[self.data_info['cena'].str[-1] == '€']
+        self.data_info = self.data_info[self.data_info['karoserija'].isin(['Limuzina', 'Karavan'])]
+
         # First column contains the image paths
         self.ad_ids = np.asarray(self.data_info.iloc[:, 12].astype(str).str[:-2])
         # print(self.ad_ids)
         # Second column is the labels
-        self.labels = np.asarray(self.data_info.iloc[:, 13])
-        self.labels = [float(lbl[:-2].replace('.', '')) for lbl in self.labels]
+        self.labels_str = np.asarray(self.data_info.iloc[:, 5])
+        self.labels = np.zeros(self.labels_str.shape)
+        self.labels = np.where(self.labels_str == 'Limuzina', 1, 0)
+
+        # self.labels = [float(lbl[:-2].replace('.', '')) for lbl in self.labels]
         # Calculate len
         self.data_len = len(self.data_info.index)
 
