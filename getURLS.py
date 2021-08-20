@@ -34,26 +34,6 @@ def get_URLS_from_HTML(html_file="webpage.html"):
             pass
     return urls
 
-def get_num_pages_from_html(html_file="webpage.html"):
-    """
-    Ova funkcija vraca ukupan broj stranica pretrage
-    (STARA VERZIJA F-CIJE)
-
-    """
-    with open('webpage.html','r', encoding='utf-8') as page:
-        soup = BeautifulSoup(page, 'html.parser')
-
-    results = soup.find(text=re.compile("Prikazano od"))
-    results = str(results).strip()
-    total = int(results.split()[-1])
-    print("TOTAL: ", total)
-    if total%25==0:
-        num_pages = total/25
-    else:
-        num_pages = (total//25) + 1
-    
-    return num_pages
-
 def get_cars_from_page_url(url):
     """
     url - Adresa stranice pretrage na kojoj je prikazano do 25 modela
@@ -90,8 +70,8 @@ def get_num_pages_from_url(url):
     results = str(results).strip()
     total = int(results.split()[-1])
     print("TOTAL: ", total)
-    if total%25==0:
-        num_pages = total/25
+    if total % 25 == 0:
+        num_pages = int(total/25)
     else:
         num_pages = (total//25) + 1
     
