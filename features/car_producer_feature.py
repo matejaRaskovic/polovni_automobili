@@ -3,20 +3,20 @@ import torch
 import numpy as np
 
 class SeatMaterialFeature():
-    num_classes = 4
-    d = {'Štof': 0, 'Prirodna koža': 1, 'Kombinovana koža': 1, 'Velur': 2, 'Drugi': 3}
+    num_classes = 8
+    d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5, 'Renault': 6, 'Mercedes Benz': 7}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['materijal_enterijera'].isin(['Štof', 'Prirodna koža', 'Kombinovana koža', 'Velur', 'Drugi'])
+        return df['marka'].isin(['Volkswagen', 'Audi', 'BMW', 'Opel', 'Peugeot', 'Fiat', 'Renault', 'Mercedes Benz'])
 
     def name(self):
-        return 'materijal_enterijera'
+        return 'marka'
 
     def pos(self):
-        return 2
+        return 0
 
     def calculateLoss(self, vector, target, device):
         vector = vector.to(device)
