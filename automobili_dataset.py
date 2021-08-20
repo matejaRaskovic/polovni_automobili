@@ -22,7 +22,7 @@ class CarAdDataset(Dataset):
                 SeatMaterialFeature(),
                 CarProducerFeature(),
                 CarColorFeature(),
-                # InteriorColorFeature()
+                InteriorColorFeature()
                 ]
 
     def __init__(self, csv_path):
