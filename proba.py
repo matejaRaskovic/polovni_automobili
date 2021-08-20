@@ -6,6 +6,9 @@ from multiprocessing import Pool, Manager
 import sys
 sys.setrecursionlimit(25000)
 
+manager = Manager()
+data = manager.list()
+
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 def fetch_a_sample(url):
@@ -15,11 +18,13 @@ def fetch_a_sample(url):
 
     auto = Automobil()
     auto.readFromSoup(soup)
-    print(1)
-    return vars(auto)
+    print(vars(auto))
+    data.append(vars(data))
+    # return vars(auto)
 
 
 def get_data_to_csv():
+    global data
     URLS_all = []
     with open('all_cars.txt', 'r') as file:
         for line in file:
@@ -27,8 +32,8 @@ def get_data_to_csv():
 
     URLS = URLS_all
 
-    p = Pool(32)
-    data = p.map(fetch_a_sample, tuple(URLS))
+    p = Pool(2)
+    p.map(fetch_a_sample, tuple(URLS))
 
     keys = data[0].keys()
     with open('all_cars.csv', 'w', newline='', encoding="utf-8") as file:
