@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch
 import numpy as np
 
-class SeatMaterialFeature():
+class CarProducerFeature():
     num_classes = 8
     d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5, 'Renault': 6, 'Mercedes Benz': 7}
 

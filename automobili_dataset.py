@@ -13,10 +13,12 @@ from collections import namedtuple
 
 from features.car_body_feature import CarBodyFeature
 from features.seat_material_feature import SeatMaterialFeature
+from features.car_producer_feature import CarProducerFeature
 
 class CarAdDataset(Dataset):
     features = [CarBodyFeature(),
-                SeatMaterialFeature()]
+                SeatMaterialFeature(),
+                CarProducerFeature()]
 
     def __init__(self, csv_path):
         """
