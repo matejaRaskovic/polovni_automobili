@@ -18,10 +18,6 @@ torch.backends.cudnn.deterministic = True
 
 def feed_forward(net, images, num_imgs, labels, device):
     images = images.to(device)
-    lossFun = nn.CrossEntropyLoss()
-
-
-    # labels = torch.from_numpy(np.array(labels))
 
     total_loss = 0
 
@@ -33,6 +29,8 @@ def feed_forward(net, images, num_imgs, labels, device):
         loss = 0
         for feature in CarAdDataset.features:
             vec = est[feature.pos():feature.pos()+1]
+            print(feature.name()])
+            print(labels[feature.name()][i])
             loss += feature.calculateLoss(vec, labels[feature.name()][i], device)
 
         total_loss += loss
