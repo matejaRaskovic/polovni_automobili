@@ -5,6 +5,8 @@ import time
 import os
 
 from multiprocessing import Pool
+# cnt = 1
+
 
 def createHtmlFile(url, html_file="webpage.html"):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -12,6 +14,7 @@ def createHtmlFile(url, html_file="webpage.html"):
     soup = BeautifulSoup(page.content, 'html.parser')
     with open(html_file, "w", encoding='utf-8') as file:
         file.write(soup.prettify())
+
 
 def download_images_for_url(car_ad_url):
     car_id = car_ad_url.split('/')[-2]
@@ -42,10 +45,11 @@ def download_images_for_url(car_ad_url):
         file.close()
 
     t2 = time.time()
-    print('Finished. Time spent: ' + str(t2 - t1))
-    print('')
+    # print('Finished. Time spent: ' + str(t2 - t1) + "   Downloaded " + str(cnt))
+    # print('')
 
-def get_images_from_urls(txt_file="all_audi_a4_urls.txt"):
+
+def get_images_from_urls(txt_file="all_cars.txt"):
     with open(txt_file, 'r') as urls_file:
         urls = []
         for url in urls_file:
@@ -53,9 +57,10 @@ def get_images_from_urls(txt_file="all_audi_a4_urls.txt"):
 
         print(len(urls))
 
-        p = Pool(32)
+        p = Pool(2)
         print(tuple(urls))
         p.map(download_images_for_url, tuple(urls))
+
 
 if __name__ == '__main__':
     linkovi = get_images_from_urls()
