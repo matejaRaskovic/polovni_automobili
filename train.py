@@ -182,8 +182,11 @@ def main():
             train_total_loss += loss.cpu().detach()
 
         print("\n\n\nTOTAL LOSS: ")
-        print(train_total_loss/1000000)
+        print(train_total_loss)
         print('\n\n')
+
+        with open(os.path.join(args.ckpt, args.id, 'train_loss_log.txt'), 'a') as log_txt:
+            log_txt.write(str(ith_epoch) + '  ' + str(train_total_loss) + '\n')
 
         # Valid phase
         # net.eval()
