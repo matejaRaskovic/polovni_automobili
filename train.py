@@ -30,6 +30,9 @@ def feed_forward(net, images, num_imgs, labels, device):
         est = net(imgs_for_sample)
         est = est.view((1, est.shape[0]))
         lbl = labels[i].view((1)).type(torch.LongTensor).to(device)
+        if i == 0:
+            print(est)
+            print(lbl)
         loss = lossFun(est, lbl)
         total_loss += loss
 
