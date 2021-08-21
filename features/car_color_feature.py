@@ -5,7 +5,8 @@ import numpy as np
 class CarColorFeature():
     num_classes = 6
     d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
-
+    grad_weight = {}
+    
     def __init__(self):
         pass
 
@@ -44,7 +45,17 @@ class CarColorFeature():
                 return key
 
     def calculateGradWeight(self, df):
-        pass
+        for sample in df[self.name()]:
+            if sample in self.grad_weight:
+                self.grad_weight[sample] += 1
+            else:
+                self.grad_weight[sample] = 1
+
+        h = len(df.index) / len(self.grad_weight)
+        for key in self.grad_weight:
+            self.grad_weight[key] = h / self.grad_weight[key]
+
+        print(self.grad_weight)
 
     def getWeightForSample(self, sample):
         return 1.
