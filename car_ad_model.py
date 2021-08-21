@@ -70,7 +70,7 @@ class CarAdModel(nn.Module):
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
-                           batch_first=False,
+                           batch_first=True,
                            bidirectional=False)
 
         self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
@@ -86,16 +86,16 @@ class CarAdModel(nn.Module):
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
         feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
         for i in range(x.shape[0]):
-            print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
-            print(feature_grid[i:i+1, :].shape)
+            # print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
+            # print(feature_grid[i:i+1, :].shape)
             # exit(1)
             feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
 
-        # feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
-        # feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
-        # feature_grid = feature_grid.to(x.device)
+        feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
+        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
+        feature_grid = feature_grid.to(x.device)
 
-        # rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
+        rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
         # ht = ht.view((1, ht.shape[1], 2048))
         # print(ht.shape)
 
@@ -108,9 +108,9 @@ class CarAdModel(nn.Module):
         # for i in range()
         # exit(1)
 
-        rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
+        # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
-        # rnn_input = ht
+        rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # print(ht.shape)
         lin_input = torch.flatten(ht[-1])
