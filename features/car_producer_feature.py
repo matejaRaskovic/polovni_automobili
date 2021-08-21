@@ -32,7 +32,7 @@ class CarProducerFeature():
             print(vec)
             print(target)
 
-        return lossFun(vec, target)
+        return lossFun(vec, target)*weight
 
     def calculateGradWeight(self, df):
         for sample in df[self.name()]:
