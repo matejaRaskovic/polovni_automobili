@@ -82,20 +82,25 @@ class CarAdDataset(Dataset):
         # print(ad_id)
 
         fldr_pth = os.path.join('slike', ad_id)
-        imgs = torch.FloatTensor(np.zeros((50, 3, 150, 200)))
+        imgs = torch.FloatTensor(np.zeros((50, 3, 200, 200)))
         num_imgs = len(os.listdir(fldr_pth))
         i = 0
         for file in os.listdir(fldr_pth):
             file_pth = os.path.join(fldr_pth, file)
 
             img_as_img = Image.open(file_pth)
-            # print(img_as_img.size)
+            print(img_as_img.size)
+            if img_as_img.size[0] > img_as_img.size[1]:
+                scale = 200/img_as_img.size[0]
+                newsize = (img_as_img.size*scale).astype(int)
+                print(newsize)
             newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
             img_as_tensor = self.to_tensor(img_as_img)
             imgs[i, :] = img_as_tensor
             i += 1
             # print(i)
+        exit(1)
 
         lbls_dict = {}
         for feature in self.features:
