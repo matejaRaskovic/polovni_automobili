@@ -4,9 +4,9 @@ import numpy as np
 
 class CarColorFeature():
     # num_classes = 6
-    num_classes = 2
+    num_classes = 3
     # d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
-    d = {'Crna': 0, 'Bela': 1, 'Siva': 1}
+    d = {'Crna': 0, 'Bela': 1, 'Siva': 1, 'Crvena': 2}
     grad_weight = {}
 
     def __init__(self):
@@ -14,7 +14,7 @@ class CarColorFeature():
 
     def validDataMaskFromDF(self, df):
         # return df['boja'].isin(['Crna', 'Bela', 'Siva', 'Plava', 'Crvena'])
-        return df['boja'].isin(['Crna', 'Bela', 'Siva'])
+        return df['boja'].isin(['Crna', 'Bela', 'Siva', 'Crvena'])
 
     def name(self):
         return 'boja'
