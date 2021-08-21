@@ -25,7 +25,7 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
         imgs_for_sample = images[i, :]  # using only one sample from batch
         imgs_for_sample = imgs_for_sample[0:num_imgs[i], :]  # keeping only valid images - removing the padding
         img_sizes_for_sample = img_sizes[i, :]
-        img_sizes_for_sample = imgs_for_sample[0:num_imgs[i], :]
+        img_sizes_for_sample = img_sizes_for_sample[0:num_imgs[i], :]
         # sizes_for_sample =
         est = net(imgs_for_sample, img_sizes_for_sample)
         loss = 0
