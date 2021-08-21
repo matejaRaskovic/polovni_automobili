@@ -92,7 +92,10 @@ class CarAdModel(nn.Module):
             feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
 
         feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
+        print(feature_grid.shape)
         feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
+        print(feature_grid.shape)
+        exit(1)
         feature_grid = feature_grid.to(x.device)
 
         rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
