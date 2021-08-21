@@ -70,7 +70,7 @@ class CarAdModel(nn.Module):
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
-                           batch_first=False,
+                           batch_first=True,
                            bidirectional=False)
 
         self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
