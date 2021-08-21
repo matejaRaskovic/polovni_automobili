@@ -31,8 +31,7 @@ def feed_forward(net, images, num_imgs, labels, device):
             vec = est[feature.pos():feature.pos()+1]
             # print(feature.name())
             # print(labels[feature.name()][i])
-            print(labels[feature.name()])
-            loss += feature.calculateLoss(vec, labels[feature.name()][i], device)
+            loss += feature.calculateLoss(vec, labels[feature.name()][0][i], labels[feature.name()][1][i], device)
 
         total_loss += loss
 
