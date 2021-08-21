@@ -96,6 +96,8 @@ class CarAdDataset(Dataset):
             lbls_dict[feature.name()] = [feature.nameToClassId(self.data_info[feature.name()][index]),
                                          feature.getWeightForSample(self.data_info[feature.name()][index])]
 
+            print(lbls_dict[feature.name()])
+
         # print(len(lbls_dict))
         return [imgs, num_imgs, lbls_dict]
 
