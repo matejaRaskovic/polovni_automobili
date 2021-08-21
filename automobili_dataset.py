@@ -82,7 +82,7 @@ class CarAdDataset(Dataset):
         # print(ad_id)
 
         fldr_pth = os.path.join('slike', ad_id)
-        imgs = torch.FloatTensor(np.zeros((50, 3, 300, 400)))
+        imgs = torch.FloatTensor(np.zeros((50, 3, 150, 200)))
         num_imgs = len(os.listdir(fldr_pth))
         i = 0
         for file in os.listdir(fldr_pth):
@@ -90,7 +90,7 @@ class CarAdDataset(Dataset):
 
             img_as_img = Image.open(file_pth)
             # print(img_as_img.size)
-            newsize = (400, 300)
+            newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
             img_as_tensor = self.to_tensor(img_as_img)
             imgs[i, :] = img_as_tensor
