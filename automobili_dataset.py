@@ -44,7 +44,7 @@ class CarAdDataset(Dataset):
 
         self.data_info = self.data_info[mask]
 
-
+        self.data_info[self.data_info['materijal_enterijera'].isin(['Prirodna koža', 'Kombinovana koža'])]['materijal_enterijera'] = 'Koža'
         max_size = self.data_info['materijal_enterijera'].value_counts().max()
         lst = [self.data_info]
         for class_index, group in self.data_info.groupby('materijal_enterijera'):
