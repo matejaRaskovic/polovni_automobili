@@ -94,12 +94,21 @@ class CarAdDataset(Dataset):
                 scale = 200/img_as_img.size[0]
             else:
                 scale = 200/img_as_img.size[0]
-            newsize = (img_as_img.size[0]*scale, img_as_img.size[1]*scale)
+            newsize = (int(img_as_img.size[0]*scale), int(img_as_img.size[1]*scale))
             print(newsize)
-            newsize = (200, 150)
+            # newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
             img_as_tensor = self.to_tensor(img_as_img)
-            imgs[i, :] = img_as_tensor
+            if img_as_img.size[0] > img_as_img.size[1]:
+                pad1 = (200 - img_as_img.size[1])//2
+                pad2 = 200 - img_as_img.size[1] - pad1
+                imgs[i, :, pad1:200-pad2, :] = img_as_tensor
+            else:
+                pad1 = (200 - img_as_img.size[0]) // 2
+                pad2 = 200 - img_as_img.size[0] - pad1
+                imgs[i, :, :, pad1:200 - pad2] = img_as_tensor
+
+            # imgs[i, :] = img_as_tensor
             i += 1
             # print(i)
         exit(1)
