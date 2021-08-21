@@ -70,7 +70,7 @@ class CarAdModel(nn.Module):
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
-                           batch_first=True,
+                           batch_first=False,
                            bidirectional=False)
 
         self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
@@ -86,6 +86,8 @@ class CarAdModel(nn.Module):
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
         feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
         for i in range(x.shape[0]):
+            print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
+            exit(1)
             feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
 
         # feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
