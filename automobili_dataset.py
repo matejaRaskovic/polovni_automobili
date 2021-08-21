@@ -85,7 +85,7 @@ class CarAdDataset(Dataset):
         imgs = torch.FloatTensor(np.zeros((50, 3, 200, 200)))
         num_imgs = len(os.listdir(fldr_pth))
         i = 0
-        img_sizes = []
+        img_sizes = np.zeros((50, 2))
         for file in os.listdir(fldr_pth):
             file_pth = os.path.join(fldr_pth, file)
 
@@ -96,7 +96,8 @@ class CarAdDataset(Dataset):
             else:
                 scale = 200/img_as_img.size[1]
             newsize = (int(round(img_as_img.size[0]*scale)), int(round(img_as_img.size[1]*scale)))
-            img_sizes.append(newsize)
+            img_sizes[i, 0] = newsize[0]
+            img_sizes[i, 1] = newsize[1]
             # print(newsize)
             # newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
