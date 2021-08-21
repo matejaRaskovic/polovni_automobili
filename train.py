@@ -16,7 +16,7 @@ from automobili_dataset import CarAdDataset
 torch.backends.cudnn.deterministic = True
 
 
-def feed_forward(net, images, num_imgs, labels, device):
+def feed_forward(net, images, num_imgs, img_sizes, labels, device):
     images = images.to(device)
 
     total_loss = 0
@@ -161,9 +161,10 @@ def main():
             images = next_data[0]
             num_imgs = next_data[1]
             labels = next_data[2]
+            img_sizes = next_data[3]
 
             with torch.cuda.amp.autocast():
-                loss = feed_forward(net, images, num_imgs, labels, device)
+                loss = feed_forward(net, images, num_imgs, img_sizes, labels, device)
                 print(loss)
 
             scaler.scale(loss).backward()

@@ -74,10 +74,11 @@ class CarAdModel(nn.Module):
             self.x_std = self.x_std.to(x.device)
         return (x[:, :3] - self.x_mean) / self.x_std
 
-
-    def forward(self, x):
+    def forward(self, x, img_sizes):
         x = self._prepare_x(x)
         img_features = self.feature_extractor(x)
+
+        print(img_sizes)
 
         rnn_input = img_features.view(img_features.shape[0], 1, 512)
 
