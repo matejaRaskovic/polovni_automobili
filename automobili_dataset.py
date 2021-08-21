@@ -111,7 +111,7 @@ class CarAdDataset(Dataset):
             # imgs[i, :] = img_as_tensor
             i += 1
             # print(i)
-        exit(1)
+        # exit(1)
 
         lbls_dict = {}
         for feature in self.features:
