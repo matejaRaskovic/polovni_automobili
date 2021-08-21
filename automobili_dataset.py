@@ -46,11 +46,13 @@ class CarAdDataset(Dataset):
 
         # self.data_info.loc[self.data_info['materijal_enterijera'].isin(['Prirodna koža', 'Kombinovana koža']), 'materijal_enterijera'] = 'Koža'
         # print(self.data_info['materijal_enterijera'].value_counts())
-        max_size = self.data_info['boja'].value_counts().max()
-        lst = [self.data_info]
-        for class_index, group in self.data_info.groupby('boja'):
-            lst.append(group.sample(max_size - len(group), replace=True))
-        self.data_info = pd.concat(lst)
+
+        # Use this for oversampling
+        # max_size = self.data_info['boja'].value_counts().max()
+        # lst = [self.data_info]
+        # for class_index, group in self.data_info.groupby('boja'):
+        #     lst.append(group.sample(max_size - len(group), replace=True))
+        # self.data_info = pd.concat(lst)
 
         for feature in self.features:
             feature.calculateGradWeight(self.data_info)
