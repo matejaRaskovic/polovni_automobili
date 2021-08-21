@@ -92,8 +92,10 @@ class CarAdDataset(Dataset):
             print(img_as_img.size)
             if img_as_img.size[0] > img_as_img.size[1]:
                 scale = 200/img_as_img.size[0]
-                newsize = (img_as_img.size*scale).astype(int)
-                print(newsize)
+            else:
+                scale = 200/img_as_img.size[0]
+            newsize = (img_as_img.size[0]*scale, img_as_img.size[1]*scale)
+            print(newsize)
             newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
             img_as_tensor = self.to_tensor(img_as_img)
