@@ -20,8 +20,8 @@ from features.interior_color_feature import InteriorColorFeature
 class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
                 # CarBodyFeature(),
-                # SeatMaterialFeature(),
-                CarColorFeature(),
+                SeatMaterialFeature(),
+                # CarColorFeature(),
                 # InteriorColorFeature()
                 ]
 
@@ -44,10 +44,10 @@ class CarAdDataset(Dataset):
 
         self.data_info = self.data_info[mask]
 
-        max_size = self.data_info['boja'].value_counts().max()
 
+        max_size = self.data_info['materijal_enterijera'].value_counts().max()
         lst = [self.data_info]
-        for class_index, group in self.data_info.groupby('boja'):
+        for class_index, group in self.data_info.groupby('materijal_enterijera'):
             lst.append(group.sample(max_size - len(group), replace=True))
         self.data_info = pd.concat(lst)
 
