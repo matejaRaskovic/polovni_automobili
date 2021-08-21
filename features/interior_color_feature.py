@@ -20,13 +20,13 @@ class InteriorColorFeature():
 
     def calculateLoss(self, vector, target, device):
         vector = vector.to(device)
-        print(target)
+        # print(target)
         target = target.view((1)).type(torch.LongTensor).to(device)
 
         lossFun = nn.CrossEntropyLoss()
         vec = vector[:, 0:self.num_classes]
 
-        dbg = True
+        dbg = False
         if dbg and np.random.random(1) < 0.1:
             print(vec)
             print(target)

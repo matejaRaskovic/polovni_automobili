@@ -29,8 +29,8 @@ def feed_forward(net, images, num_imgs, labels, device):
         loss = 0
         for feature in CarAdDataset.features:
             vec = est[feature.pos():feature.pos()+1]
-            print(feature.name())
-            print(labels[feature.name()][i])
+            # print(feature.name())
+            # print(labels[feature.name()][i])
             loss += feature.calculateLoss(vec, labels[feature.name()][i], device)
 
         total_loss += loss
@@ -99,6 +99,8 @@ def main():
 
     # Create dataloader
     dataset_train = CarAdDataset(args.train_csv)  # FLIPPING CAN BE ADDED
+    # for idx, data in enumerate(dataset_train):
+    #     print(idx)
     loader_train = DataLoader(dataset_train, args.batch_size_train,
                               shuffle=True, drop_last=True,
                               num_workers=args.num_workers,

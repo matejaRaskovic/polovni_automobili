@@ -26,6 +26,8 @@ for url in URLS:
 
     auto = Automobil()
     auto.readFromSoup(soup)
+    if vars(auto)['marka'] is None:
+        continue
     data.append(vars(auto))
     del(auto)
 

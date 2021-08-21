@@ -1,12 +1,23 @@
 import pandas as pd
 import numpy as np
+import os
 
 
 csv_path = 'all_cars.csv'
-
+imgs_fldr = 'slike'
+filter_without_images = True
 
 def main():
     df = pd.read_csv(csv_path, header=0)
+    valid_ads = []
+    if filter_without_images:
+        for ad_id in df['br_oglasa'].astype(str):
+            ad_imgs_fldr = os.path.join(imgs_fldr, ad_id)
+            if os.path.exists(ad_imgs_fldr) and len(os.listdir(ad_imgs_fldr)) > 0:
+                #print(ad_id)
+                valid_ads.append(ad_id)
+
+    df = df[df['br_oglasa'].astype(str).isin(valid_ads)]
 
     msk = np.random.rand(len(df)) < 0.9
     train_valid = df[msk]

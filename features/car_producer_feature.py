@@ -3,14 +3,14 @@ import torch
 import numpy as np
 
 class CarProducerFeature():
-    num_classes = 8
-    d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5, 'Renault': 6, 'Mercedes Benz': 7}
+    num_classes = 6
+    d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5}  # , 'Renault': 6, 'Mercedes Benz': 7}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['marka'].isin(['Volkswagen', 'Audi', 'BMW', 'Opel', 'Peugeot', 'Fiat', 'Renault', 'Mercedes Benz'])
+        return df['marka'].isin(['Volkswagen', 'Audi', 'BMW', 'Opel', 'Peugeot', 'Fiat'])  # , 'Renault', 'Mercedes Benz'])
 
     def name(self):
         return 'marka'

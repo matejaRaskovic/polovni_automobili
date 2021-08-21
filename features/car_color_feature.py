@@ -25,7 +25,7 @@ class CarColorFeature():
         lossFun = nn.CrossEntropyLoss()
         vec = vector[:, 0:self.num_classes]
 
-        dbg = True
+        dbg = False
         if dbg and np.random.random(1) < 0.1:
             print(vec)
             print(target)
@@ -36,7 +36,7 @@ class CarColorFeature():
         if name in self.d:
             return self.d[name]
         else:
-            return len(self.d) + 1
+            return len(self.d)
 
     def idToClassName(self, id):
         for key in self.d:

@@ -25,7 +25,7 @@ class SeatMaterialFeature():
         lossFun = nn.CrossEntropyLoss()
         vec = vector[:, 0:self.num_classes]
 
-        dbg = True
+        dbg = False
         if dbg and np.random.random(1) < 0.1:
             print(vec)
             print(target)

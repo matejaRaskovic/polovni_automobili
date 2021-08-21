@@ -40,12 +40,16 @@ class CarAdDataset(Dataset):
         # data filtering
         mask = ~self.data_info['marka'].isin([None])
         for feature in self.features:
-            mask |= feature.validDataMaskFromDF(self.data_info)
+            mask &= feature.validDataMaskFromDF(self.data_info)
 
         self.data_info = self.data_info[mask]
-
+        self.data_info.to_csv('tmp_to_filter.csv', index=False)
+        self.data_info = pd.read_csv('tmp_to_filter.csv', header=0)
         # First column contains the image paths
-        self.ad_ids = np.asarray(self.data_info.iloc[:, 12].astype(str).str[:-2])
+        self.ad_ids = np.asarray(self.data_info.iloc[:, 12].astype(str))
+        # print(len(self.ad_ids))
+
+
         # print(self.ad_ids)
         # Second column is the labels
         # self.labels_str = np.asarray(self.data_info.iloc[:, 5])
@@ -55,9 +59,15 @@ class CarAdDataset(Dataset):
         # self.labels = [float(lbl[:-2].replace('.', '')) for lbl in self.labels]
         # Calculate len
         self.data_len = len(self.data_info.index)
-
+        # self.data_info = self.data_info.reindex()
+        # print(self.data_info[10:20])
+        # exit(1)
+        print(self.data_len)
+        
     def __getitem__(self, index):
+        # print(index)
         ad_id = self.ad_ids[index]
+        # print(ad_id)
 
         fldr_pth = os.path.join('slike', ad_id)
         imgs = torch.FloatTensor(np.zeros((50, 3, 300, 400)))
@@ -77,8 +87,11 @@ class CarAdDataset(Dataset):
 
         lbls_dict = {}
         for feature in self.features:
+            # print(index)
+            # print(self.data_info[feature.name()][40:60])
             lbls_dict[feature.name()] = feature.nameToClassId(self.data_info[feature.name()][index])
 
+        # print(len(lbls_dict))
         return [imgs, num_imgs, lbls_dict]
 
     def __len__(self):
