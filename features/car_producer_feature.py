@@ -48,6 +48,7 @@ class CarProducerFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
+        self.grad_weight = {'Volkswagen': 0.6157781367797522, 'Audi': 0.8940578577013292, 'BMW': 0.942315615986815, 'Opel': 1.1782586295723854, 'Peugeot': 1.243610657966286, 'Fiat': 1.839903459372486}
         return self.grad_weight[sample]
 
     def nameToClassId(self, name):
