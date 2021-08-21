@@ -109,7 +109,7 @@ class CarAdModel(nn.Module):
 
         rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
-        print(ht.shape)
+        # print(ht.shape)
         lin_input = torch.flatten(ht[-1])
         output = self.linear(lin_input)
 
