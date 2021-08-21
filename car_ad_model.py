@@ -17,7 +17,7 @@ class Resnet(nn.Module):
         self.encoder = getattr(models, backbone)(pretrained=pretrained)
         del self.encoder.fc, self.encoder.avgpool
 
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.avgpool = nn.AdaptiveAvgPool2d((3, 3))
 
     def forward(self, x):
         features = []
@@ -53,7 +53,7 @@ class CarAdModel(nn.Module):
     def __init__(self, backbone='resnet18'):
         super(CarAdModel, self).__init__()
         self.backbone = backbone  # for now we use only resnet18
-        self.rnn_hidden_size = 256  # This could be larger for server-side network for improved accuracy
+        self.rnn_hidden_size = 512  # This could be larger for server-side network for improved accuracy
 
         self.output_vector_size = 40
 
@@ -79,7 +79,7 @@ class CarAdModel(nn.Module):
         x = self._prepare_x(x)
         img_features = self.feature_extractor(x)
 
-        rnn_input = img_features.view(img_features.shape[0], 1, 512)
+        rnn_input = img_features.view(img_features.shape[0], 1, 9*512)
 
         rnn_output, (ht, ct) = self.rnn(rnn_input)
         lin_input = torch.flatten(ht[-1])
