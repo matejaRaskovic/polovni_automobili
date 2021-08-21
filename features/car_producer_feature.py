@@ -21,7 +21,6 @@ class CarProducerFeature():
 
     def calculateLoss(self, vector, target, weight, device):
         vector = vector.to(device)
-        print(weight)
         target = target.view((1)).type(torch.LongTensor).to(device)
 
         lossFun = nn.CrossEntropyLoss()
