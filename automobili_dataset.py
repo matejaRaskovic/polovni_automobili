@@ -19,8 +19,8 @@ from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
-                CarBodyFeature(),
-                # SeatMaterialFeature(),
+                # CarBodyFeature(),
+                SeatMaterialFeature(),
                 # CarColorFeature(),
                 # InteriorColorFeature()
                 ]
