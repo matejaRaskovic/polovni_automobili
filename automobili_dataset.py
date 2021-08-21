@@ -94,7 +94,7 @@ class CarAdDataset(Dataset):
                 scale = 200/img_as_img.size[0]
             else:
                 scale = 200/img_as_img.size[1]
-            newsize = (int(img_as_img.size[0]*scale), int(img_as_img.size[1]*scale))
+            newsize = (int(round(img_as_img.size[0]*scale)), int(round(img_as_img.size[1]*scale)))
             print(newsize)
             # newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
