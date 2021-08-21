@@ -3,15 +3,18 @@ import torch
 import numpy as np
 
 class CarColorFeature():
-    num_classes = 6
-    d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
+    # num_classes = 6
+    num_classes = 2
+    # d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
+    d = {'Crna': 0, 'Bela': 1}
     grad_weight = {}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['boja'].isin(['Crna', 'Bela', 'Siva', 'Plava', 'Crvena'])
+        # return df['boja'].isin(['Crna', 'Bela', 'Siva', 'Plava', 'Crvena'])
+        return df['boja'].isin(['Crna', 'Bela'])
 
     def name(self):
         return 'boja'
@@ -58,5 +61,6 @@ class CarColorFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
-        self.grad_weight = {'Bela': 1.7183723797780517, 'Crvena': 4.389291338582677, 'Siva': 0.5013851412124483, 'Crna': 0.636783184829792, 'Plava': 1.5990820424555363}
-        return self.grad_weight[sample]
+        # self.grad_weight = {'Bela': 1.7183723797780517, 'Crvena': 4.389291338582677, 'Siva': 0.5013851412124483, 'Crna': 0.636783184829792, 'Plava': 1.5990820424555363}
+        # return self.grad_weight[sample]
+        return 1
