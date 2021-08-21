@@ -76,6 +76,7 @@ class CarAdModel(nn.Module):
 
     def forward(self, x, img_sizes):
         x = self._prepare_x(x)
+        print(x.shape)
         img_features = self.feature_extractor(x)
 
         print(img_features.shape)
@@ -83,7 +84,7 @@ class CarAdModel(nn.Module):
         print(img_sizes.shape)
         # for i in range()
         exit(1)
-        
+
         rnn_input = img_features.view(img_features.shape[0], 1, 512)
 
         rnn_output, (ht, ct) = self.rnn(rnn_input)
