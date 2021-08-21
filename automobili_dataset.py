@@ -43,6 +43,10 @@ class CarAdDataset(Dataset):
             mask &= feature.validDataMaskFromDF(self.data_info)
 
         self.data_info = self.data_info[mask]
+
+        for feature in self.features:
+            feature.calculateGradWeight(self.data_info)
+
         self.data_info.to_csv('tmp_to_filter.csv', index=False)
         self.data_info = pd.read_csv('tmp_to_filter.csv', header=0)
         # First column contains the image paths

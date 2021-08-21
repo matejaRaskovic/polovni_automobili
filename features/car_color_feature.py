@@ -42,3 +42,6 @@ class CarColorFeature():
         for key in self.d:
             if self.d[key] == id:
                 return key
+
+    def calculateGradWeight(self, df):
+        pass

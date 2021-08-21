@@ -5,6 +5,7 @@ import numpy as np
 class CarProducerFeature():
     num_classes = 6
     d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5}  # , 'Renault': 6, 'Mercedes Benz': 7}
+    grad_weight = {}
 
     def __init__(self):
         pass
@@ -31,6 +32,19 @@ class CarProducerFeature():
             print(target)
 
         return lossFun(vec, target)
+
+    def calculateGradWeight(self, df):
+        for sample in df[self.name()]:
+            if sample in self.grad_weight:
+                self.grad_weight[sample] += 1
+            else:
+                self.grad_weight[sample] = 1
+
+        h = len(df.index)/len(self.grad_weight)
+        for key in self.grad_weight:
+            self.grad_weight[key] = h/self.grad_weight[key]
+
+        print(self.grad_weight)
 
     def nameToClassId(self, name):
         return self.d[name]
