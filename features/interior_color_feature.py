@@ -21,6 +21,7 @@ class InteriorColorFeature():
     def calculateLoss(self, vector, target, device):
         vector = vector.to(device)
         # print(target)
+        target, weight = target
         target = target.view((1)).type(torch.LongTensor).to(device)
 
         lossFun = nn.CrossEntropyLoss()
@@ -44,3 +45,6 @@ class InteriorColorFeature():
 
     def calculateGradWeight(self, df):
         pass
+
+    def getWeightForSample(self, sample):
+        return 1.
