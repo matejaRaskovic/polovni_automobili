@@ -96,7 +96,7 @@ class CarAdModel(nn.Module):
         feature_grid = feature_grid.to(x.device)
 
         rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
-        # ht = ht.view((1, ht.shape[1], 2048))
+        ht = ht.view((1, ht.shape[1], 2048))
         # print(ht.shape)
 
 
