@@ -4,7 +4,7 @@ import numpy as np
 
 class CarColorFeature():
     # num_classes = 6
-    num_classes = 5
+    num_classes = 4
     # d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
     d = {'Crna': 0, 'Bela': 1, 'Siva': 1, 'Plava': 2, 'Crvena': 3}
     grad_weight = {}
