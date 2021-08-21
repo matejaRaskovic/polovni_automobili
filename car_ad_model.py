@@ -78,8 +78,12 @@ class CarAdModel(nn.Module):
         x = self._prepare_x(x)
         img_features = self.feature_extractor(x)
 
-        print(img_sizes)
-
+        print(img_features.shape)
+        # feature_grid = torch.zeros((x.shape[0]))
+        print(img_sizes.shape)
+        # for i in range()
+        exit(1)
+        
         rnn_input = img_features.view(img_features.shape[0], 1, 512)
 
         rnn_output, (ht, ct) = self.rnn(rnn_input)
