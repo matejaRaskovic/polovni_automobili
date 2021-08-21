@@ -25,7 +25,7 @@ class CarColorFeature():
         lossFun = nn.CrossEntropyLoss()
         vec = vector[:, 0:self.num_classes]
 
-        dbg = False
+        dbg = True
         if dbg and np.random.random(1) < 0.1:
             print(vec)
             print(target)
