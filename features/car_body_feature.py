@@ -24,7 +24,7 @@ class CarBodyFeature():
         lossFun = nn.CrossEntropyLoss()
         vec = vector[:, 0:len(self.d)]
 
-        dbg = False
+        dbg = True
         if dbg and np.random.random(1) < 0.1:
             print(vec)
             print(target)
