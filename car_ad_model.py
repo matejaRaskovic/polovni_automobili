@@ -59,7 +59,14 @@ class CarAdModel(nn.Module):
 
         self.feature_extractor = Resnet()
 
-        self.rnn = nn.LSTM(input_size=512,  # 512 for resnet 18
+        self.rnn_img_cols = nn.LSTM(input_size=2560,  # 512 for resnet 18
+                                    hidden_size=self.rnn_hidden_size,
+                                    num_layers=2,
+                                    dropout=0.5,
+                                    batch_first=True,
+                                    bidirectional=True)
+
+        self.rnn_imgs = nn.LSTM(input_size=512,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
@@ -83,12 +90,15 @@ class CarAdModel(nn.Module):
 
         feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
         feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
-        print(feature_grid.shape)
+
+        tmp = self.rnn_img_cols(feature_grid)
+
+        print(tmp.shape)
         # img_features = self.feature_extractor(x)
 
         # print(img_features.shape)
         # feature_grid = torch.zeros((x.shape[0]))
-        print(img_sizes.shape)
+        # print(img_sizes.shape)
         # for i in range()
         exit(1)
 
