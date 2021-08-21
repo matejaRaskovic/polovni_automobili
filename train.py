@@ -104,7 +104,8 @@ def main():
     loader_train = DataLoader(dataset_train, args.batch_size_train,
                               shuffle=True, drop_last=True,
                               num_workers=args.num_workers,
-                              pin_memory=not args.no_cuda)
+                              pin_memory=not args.no_cuda,
+                              worker_init_fn=lambda x: np.random.seed())
     if args.valid_csv:
         dataset_valid = CarAdDataset(args.valid_csv)
         loader_valid = DataLoader(dataset_valid, args.batch_size_valid,
