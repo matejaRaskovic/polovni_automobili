@@ -93,7 +93,7 @@ class CarAdDataset(Dataset):
             if img_as_img.size[0] > img_as_img.size[1]:
                 scale = 200/img_as_img.size[0]
             else:
-                scale = 200/img_as_img.size[0]
+                scale = 200/img_as_img.size[1]
             newsize = (int(img_as_img.size[0]*scale), int(img_as_img.size[1]*scale))
             print(newsize)
             # newsize = (200, 150)
