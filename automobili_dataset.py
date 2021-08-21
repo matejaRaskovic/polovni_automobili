@@ -19,8 +19,8 @@ from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
-                CarBodyFeature(),
-                # SeatMaterialFeature(),
+                # CarBodyFeature(),
+                SeatMaterialFeature(),
                 # CarColorFeature(),
                 # InteriorColorFeature()
                 ]
@@ -44,15 +44,15 @@ class CarAdDataset(Dataset):
 
         self.data_info = self.data_info[mask]
 
-        # self.data_info.loc[self.data_info['materijal_enterijera'].isin(['Prirodna koža', 'Kombinovana koža']), 'materijal_enterijera'] = 'Koža'
+        self.data_info.loc[self.data_info['materijal_enterijera'].isin(['Prirodna koža', 'Kombinovana koža']), 'materijal_enterijera'] = 'Koža'
         # print(self.data_info['materijal_enterijera'].value_counts())
 
         # Use this for oversampling
-        max_size = self.data_info['karoserija'].value_counts().max()
-        lst = [self.data_info]
-        for class_index, group in self.data_info.groupby('karoserija'):
-            lst.append(group.sample(max_size - len(group), replace=True))
-        self.data_info = pd.concat(lst)
+        # max_size = self.data_info['materijal_enterijera'].value_counts().max()
+        # lst = [self.data_info]
+        # for class_index, group in self.data_info.groupby('materijal_enterijera'):
+        #     lst.append(group.sample(max_size - len(group), replace=True))
+        # self.data_info = pd.concat(lst)
 
         for feature in self.features:
             feature.calculateGradWeight(self.data_info)
