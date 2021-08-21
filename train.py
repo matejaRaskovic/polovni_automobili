@@ -18,7 +18,8 @@ torch.backends.cudnn.deterministic = True
 
 def feed_forward(net, images, num_imgs, img_sizes, labels, device):
     images = images.to(device)
-
+    img_sizes = img_sizes.to(device)
+    
     total_loss = 0
 
     for i in range(images.shape[0]):
