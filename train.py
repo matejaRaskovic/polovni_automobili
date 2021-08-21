@@ -27,7 +27,7 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
         img_sizes_for_sample = img_sizes[i, :]
         img_sizes_for_sample = imgs_for_sample[0:num_imgs[i], :]
         # sizes_for_sample =
-        est = net(imgs_for_sample, img_sizes)
+        est = net(imgs_for_sample, img_sizes_for_sample)
         loss = 0
         for feature in CarAdDataset.features:
             vec = est[feature.pos():feature.pos()+1]
