@@ -66,7 +66,7 @@ class CarAdModel(nn.Module):
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=512,  # 512 for resnet 18
+        self.rnn_imgs = nn.LSTM(input_size=2048,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
@@ -94,18 +94,21 @@ class CarAdModel(nn.Module):
 
         rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
 
-        print(ht.shape)
+        # print(ht.shape)
+
+        ht = ht.view((1, ht.shape[1], 2048))
         # img_features = self.feature_extractor(x)
 
         # print(img_features.shape)
         # feature_grid = torch.zeros((x.shape[0]))
         # print(img_sizes.shape)
         # for i in range()
-        exit(1)
+        # exit(1)
 
-        rnn_input = img_features.view(img_features.shape[0], 1, 512)
+        # rnn_input = img_features.view(img_features.shape[0], 1, 512)
 
-        rnn_output, (ht, ct) = self.rnn(rnn_input)
+        rnn_input = ht
+        rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         lin_input = torch.flatten(ht[-1])
         output = self.linear(lin_input)
 
