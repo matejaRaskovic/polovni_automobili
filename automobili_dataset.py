@@ -89,13 +89,13 @@ class CarAdDataset(Dataset):
             file_pth = os.path.join(fldr_pth, file)
 
             img_as_img = Image.open(file_pth)
-            print(img_as_img.size)
+            # print(img_as_img.size)
             if img_as_img.size[0] > img_as_img.size[1]:
                 scale = 200/img_as_img.size[0]
             else:
                 scale = 200/img_as_img.size[1]
             newsize = (int(round(img_as_img.size[0]*scale)), int(round(img_as_img.size[1]*scale)))
-            print(newsize)
+            # print(newsize)
             # newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
             img_as_tensor = self.to_tensor(img_as_img)
