@@ -3,6 +3,10 @@ import torch
 import numpy as np
 
 class CarColorFeature():
+    # bela, bez i krem u svetlu
+    # crna, bordo, teget, braon u tamnu
+    # ostale u obojen
+
     # num_classes = 6
     num_classes = 3
     # d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
