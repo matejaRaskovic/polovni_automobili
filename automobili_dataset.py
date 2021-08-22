@@ -18,11 +18,11 @@ from features.car_color_feature import CarColorFeature
 from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
-    features = [CarProducerFeature(),
-                CarBodyFeature(),
+    features = [#CarProducerFeature(),
+                # CarBodyFeature(),
                 SeatMaterialFeature(),
-                CarColorFeature(),
-                InteriorColorFeature()
+                # CarColorFeature(),
+                # InteriorColorFeature()
                 ]
 
     def __init__(self, csv_path):
@@ -44,19 +44,24 @@ class CarAdDataset(Dataset):
 
         self.data_info = self.data_info[mask]
 
-        self.data_info.loc[self.data_info['materijal_enterijera'].isin(['Prirodna koža', 'Kombinovana koža']), 'materijal_enterijera'] = 'Koža'
+        # merging some data to skip classes with very little data
+        self.data_info.loc[self.data_info['materijal_enterijera'].isin(['Velur']), 'materijal_enterijera'] = 'Drugi'
+        self.data_info.loc[self.data_info['materijal_enterijera'].isin(
+            ['Prirodna koža', 'Kombinovana koža']), 'materijal_enterijera'] = 'Koža'
         # print(self.data_info['materijal_enterijera'].value_counts())
 
         # Use this for oversampling
-        for feature in self.features:
-            max_size = self.data_info[feature.name()].value_counts().max()
-            lst = [self.data_info]
-            for class_index, group in self.data_info.groupby(feature.name()):
-                lst.append(group.sample(max_size - len(group), replace=True))
-            self.data_info = pd.concat(lst)
+        # for feature in self.features:
+        #     max_size = self.data_info[feature.name()].value_counts().max()
+        #     lst = [self.data_info]
+        #     for class_index, group in self.data_info.groupby(feature.name()):
+        #         lst.append(group.sample(max_size - len(group), replace=True))
+        #     self.data_info = pd.concat(lst)
 
         for feature in self.features:
             feature.calculateGradWeight(self.data_info)
+
+        exit(1)
 
         self.data_info.to_csv('tmp_to_filter.csv', index=False)
         self.data_info = pd.read_csv('tmp_to_filter.csv', header=0)

@@ -3,9 +3,9 @@ import torch
 import numpy as np
 
 class SeatMaterialFeature():
-    num_classes = 4
+    num_classes = 3
     # d = {'Štof': 0, 'Prirodna koža': 1, 'Kombinovana koža': 1, 'Velur': 2, 'Drugi': 3}
-    d = {'Štof': 0, 'Koža': 1, 'Velur': 2, 'Drugi': 3}  # for testing with oversampling due to imbalance
+    d = {'Štof': 0, 'Koža': 1, 'Drugi': 2}  # for testing with oversampling due to imbalance
     grad_weight = {}
 
     def __init__(self):
