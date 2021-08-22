@@ -134,7 +134,7 @@ if __name__ == "__main__":
             all_cars += page_cars
     
     # Name of txt file to store URLs of individual cars
-    URLS_FILE_NAME = "producer_classification_cars.txt"
+    URLS_FILE_NAME = "4_feature_dataset_cars.txt"
     with open(URLS_FILE_NAME, 'w') as file:
         for car in all_cars:
             file.write(car + "\n")
