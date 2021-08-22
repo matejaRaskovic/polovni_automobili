@@ -20,6 +20,10 @@ def download_images_for_url(car_ad_url_and_cnt):
     cnt = car_ad_url_and_cnt[1]
     car_id = car_ad_url.split('/')[-2]
 
+    # doing this to prevent donwloading already downloaded images
+    if os.path.exists(os.path.join('slike', car_id)):
+        return
+
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     page = requests.get(car_ad_url, headers=headers)
