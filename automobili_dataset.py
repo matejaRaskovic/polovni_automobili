@@ -61,7 +61,7 @@ class CarAdDataset(Dataset):
         for feature in self.features:
             feature.calculateGradWeight(self.data_info)
 
-        exit(1)
+        # exit(1)
 
         self.data_info.to_csv('tmp_to_filter.csv', index=False)
         self.data_info = pd.read_csv('tmp_to_filter.csv', header=0)
