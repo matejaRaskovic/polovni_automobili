@@ -54,6 +54,7 @@ class CarColorFeature():
             else:
                 self.grad_weight[sample] = 1
 
+        print(self.grad_weight)
         h = len(df.index) / len(self.grad_weight)
         for key in self.grad_weight:
             self.grad_weight[key] = h / self.grad_weight[key]
