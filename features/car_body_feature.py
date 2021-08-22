@@ -4,7 +4,8 @@ import numpy as np
 
 class CarBodyFeature():
     d = {'Limuzina': 0, 'Karavan': 1, 'Džip/SUV': 2, 'Hečbek': 3}
-
+    grad_weight = {}
+    
     def __init__(self):
         pass
 

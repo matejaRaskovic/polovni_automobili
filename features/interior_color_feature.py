@@ -5,6 +5,7 @@ import numpy as np
 class InteriorColorFeature():
     num_classes = 5
     d = {'Crna': 0, 'Bež': 1, 'Smeđa': 2, 'Siva': 3, 'Druga': 4}
+    grad_weight = {}
 
     def __init__(self):
         pass
