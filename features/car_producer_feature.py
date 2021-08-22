@@ -3,15 +3,16 @@ import torch
 import numpy as np
 
 class CarProducerFeature():
-    num_classes = 6
-    d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5}  # , 'Renault': 6, 'Mercedes Benz': 7}
+    num_classes = 3
+    # d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5}  # , 'Renault': 6, 'Mercedes Benz': 7}
+    d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2}
     grad_weight = {}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['marka'].isin(['Volkswagen', 'Audi', 'BMW', 'Opel', 'Peugeot', 'Fiat'])  # , 'Renault', 'Mercedes Benz'])
+        return df['marka'].isin(['Volkswagen', 'Audi', 'BMW'])  # , 'Opel', 'Peugeot', 'Fiat'])  # , 'Renault', 'Mercedes Benz'])
 
     def name(self):
         return 'marka'
@@ -48,8 +49,9 @@ class CarProducerFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
-        self.grad_weight = {'Volkswagen': 0.6157781367797522, 'Audi': 0.8940578577013292, 'BMW': 0.942315615986815, 'Opel': 1.1782586295723854, 'Peugeot': 1.243610657966286, 'Fiat': 1.839903459372486}
-        return self.grad_weight[sample]
+        # self.grad_weight = {'Volkswagen': 0.6157781367797522, 'Audi': 0.8940578577013292, 'BMW': 0.942315615986815, 'Opel': 1.1782586295723854, 'Peugeot': 1.243610657966286, 'Fiat': 1.839903459372486}
+        # return self.grad_weight[sample]
+        return 1
 
     def nameToClassId(self, name):
         return self.d[name]
