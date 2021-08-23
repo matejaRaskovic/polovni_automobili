@@ -3,8 +3,10 @@ import torch
 import numpy as np
 
 class InteriorColorFeature():
-    num_classes = 5
-    d = {'Crna': 0, 'Bež': 1, 'Smeđa': 2, 'Siva': 3, 'Druga': 4}
+    num_classes = 2
+    d = {'Crna': 0, 'Siva': 0,  # dark
+         'Bež': 1  # light
+         }
     grad_weight = {}
 
     def __init__(self):
@@ -27,8 +29,9 @@ class InteriorColorFeature():
         lossFun = nn.CrossEntropyLoss()
         vec = vector[:, 0:self.num_classes]
 
-        dbg = False
-        if dbg and np.random.random(1) < 0.1:
+        dbg = True
+        if dbg and np.random.random(1) < 0.025:
+            print('Interior color')
             print(vec)
             print(target)
 

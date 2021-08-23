@@ -3,16 +3,17 @@ import torch
 import numpy as np
 
 class SeatMaterialFeature():
-    num_classes = 3
+    num_classes = 2
     # d = {'Štof': 0, 'Prirodna koža': 1, 'Kombinovana koža': 1, 'Velur': 2, 'Drugi': 3}
-    d = {'Štof': 0, 'Koža': 1, 'Drugi': 2}  # for testing with oversampling due to imbalance
+    d = {'Štof': 0, 'Koža': 1}  # for testing with oversampling due to imbalance
     grad_weight = {}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['materijal_enterijera'].isin(['Štof', 'Prirodna koža', 'Kombinovana koža', 'Velur', 'Drugi'])
+        return df['materijal_enterijera'].isin(['Štof', 'Prirodna koža', 'Kombinovana koža'])
+        # leathers will be merged into one in dataset
 
     def name(self):
         return 'materijal_enterijera'
@@ -28,7 +29,8 @@ class SeatMaterialFeature():
         vec = vector[:, 0:self.num_classes]
 
         dbg = True
-        if dbg and np.random.random(1) < 0.1:
+        if dbg and np.random.random(1) < 0.025:
+            print('Seat material')
             print(vec)
             print(target)
 

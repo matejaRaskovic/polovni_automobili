@@ -3,14 +3,15 @@ import torch
 import numpy as np
 
 class CarBodyFeature():
-    d = {'Limuzina': 0, 'Karavan': 1, 'Džip/SUV': 2, 'Hečbek': 3}
+    d = {'Limuzina': 0, 'Karavan': 1, 'Džip/SUV': 1, 'Monovolumen (MiniVan)': 1, 'Hečbek': 2}
     grad_weight = {}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['karoserija'].isin(['Limuzina', 'Karavan', 'Džip/SUV', 'Hečbek'])
+        num_classes = 3
+        return df['karoserija'].isin(['Limuzina', 'Karavan', 'Džip/SUV', 'Hečbek', 'Monovolumen (MiniVan)'])
 
     def name(self):
         return 'karoserija'
@@ -23,10 +24,11 @@ class CarBodyFeature():
         target = target.view((1)).type(torch.LongTensor).to(device)
 
         lossFun = nn.CrossEntropyLoss()
-        vec = vector[:, 0:len(self.d)]
+        vec = vector[:, 0:self.num_classes]
 
         dbg = True
-        if dbg and np.random.random(1) < 0.1:
+        if dbg and np.random.random(1) < 0.025:
+            print('Car body')
             print(vec)
             print(target)
 

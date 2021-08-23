@@ -9,9 +9,10 @@ class CarColorFeature():
 
     # num_classes = 6
     num_classes = 3
-    # d = {'Crna': 0, 'Bela': 1, 'Siva': 2, 'Plava': 3, 'Crvena': 4}
-    d = {'Crna': 0, 'Bela': 1, 'Siva': 1, 'Crvena': 2}
-    grad_weight = {}
+    d = {'Crna': 0, 'Braon': 0, 'Teget': 0, 'Smeđa': 0,  # dark
+         'Bež': 1, 'Bela': 1, 'Krem': 1,  # light
+         'Bordo': 2, 'Crvena': 2, 'Kameleon': 2, 'Ljubičasta': 2, 'Narandžasta': 2,   # colorful
+         'Plava': 2, 'Tirkiz': 2, 'Zelena': 2, 'Zlatna': 2, 'Žuta': 2}
     grad_weight = {}
 
     def __init__(self):
@@ -19,7 +20,8 @@ class CarColorFeature():
 
     def validDataMaskFromDF(self, df):
         # return df['boja'].isin(['Crna', 'Bela', 'Siva', 'Plava', 'Crvena'])
-        return df['boja'].isin(['Crna', 'Bela', 'Siva', 'Crvena'])
+        return df['boja'].isin(['Crna', 'Braon', 'Teget', 'Smeđa', 'Bež', 'Bela', 'Krem', 'Bordo', 'Crvena', 'Kameleon',
+                                'Ljubičasta', 'Narandžasta', 'Plava', 'Tirkiz', 'Zelena', 'Zlatna', 'Žuta'])
 
     def name(self):
         return 'boja'
@@ -35,7 +37,8 @@ class CarColorFeature():
         vec = vector[:, 0:self.num_classes]
 
         dbg = True
-        if dbg and np.random.random(1) < 0.1:
+        if dbg and np.random.random(1) < 0.025:
+            print('Outside color')
             print(vec)
             print(target)
 
