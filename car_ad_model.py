@@ -17,7 +17,7 @@ class Resnet(nn.Module):
         self.encoder = getattr(models, backbone)(pretrained=pretrained)
         del self.encoder.fc, self.encoder.avgpool
 
-        self.avgpool = nn.AdaptiveAvgPool2d((5, 5))
+        self.avgpool = nn.AdaptiveAvgPool2d((10, 10))
 
     def forward(self, x):
         features = []
@@ -59,14 +59,14 @@ class CarAdModel(nn.Module):
 
         self.feature_extractor = Resnet()
 
-        self.rnn_img_cols = nn.LSTM(input_size=2560,  # 512 for resnet 18
-                                    hidden_size=self.rnn_hidden_size,
+        self.rnn_img_cols = nn.LSTM(input_size=2*2560,  # 512 for resnet 18
+                                    hidden_size=2*self.rnn_hidden_size,
                                     num_layers=2,
                                     dropout=0.5,
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2048,  # 512 for resnet 18
+        self.rnn_imgs = nn.LSTM(input_size=2*2048,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
@@ -84,14 +84,14 @@ class CarAdModel(nn.Module):
     def forward(self, x, img_sizes):
         x = self._prepare_x(x)
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
-        feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
+        feature_grid = torch.zeros((x.shape[0], 512, 10, 10))
         for i in range(x.shape[0]):
             # print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
             # print(feature_grid[i:i+1, :].shape)
             # exit(1)
             feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
 
-        feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
+        feature_grid = feature_grid.view((feature_grid.shape[0], 10*feature_grid.shape[1], feature_grid.shape[2], 1))
         feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
         feature_grid = feature_grid.to(x.device)
 
