@@ -30,7 +30,7 @@ class InteriorColorFeature():
         vec = vector[:, 0:self.num_classes]
 
         dbg = True
-        if dbg and np.random.random(1) < 0.025:
+        if dbg and np.random.random(1) < 0.04:
             print('\nInterior color')
             print(vec)
             print(target)

@@ -27,12 +27,12 @@ class CarBodyFeature():
         vec = vector[:, 0:self.num_classes]
 
         dbg = True
-        if dbg and np.random.random(1) < 0.025:
+        if dbg and np.random.random(1) < 0.04:
             print('\nCar body')
             print(vec)
             print(target)
 
-        return lossFun(vec, target)*weight
+        return lossFun(vec, target) # *weight
 
     def nameToClassId(self, name):
         return self.d[name]
