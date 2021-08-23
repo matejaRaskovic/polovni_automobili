@@ -136,7 +136,8 @@ def main():
             lr=args.lr, betas=(args.beta1, 0.999), weight_decay=args.weight_decay)
     else:
         raise NotImplementedError()
-
+    
+    print(args.lr)
     # Create grad scaler used for automatic mixed precision training
     scaler = torch.cuda.amp.GradScaler()
 
