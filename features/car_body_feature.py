@@ -45,7 +45,7 @@ class CarBodyFeature():
 
     def calculateGradWeight(self, df):
         for sample in df[self.name()]:
-            if sample in self.grad_weight:
+            if self.d[sample] in self.grad_weight:
                 self.grad_weight[self.d[sample]] += 1
             else:
                 self.grad_weight[self.d[sample]] = 1
