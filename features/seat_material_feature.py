@@ -34,7 +34,7 @@ class SeatMaterialFeature():
             print(vec)
             print(target)
 
-        return lossFun(vec, target)
+        return lossFun(vec, target)*weight
 
     def nameToClassId(self, name):
         return self.d[name]
