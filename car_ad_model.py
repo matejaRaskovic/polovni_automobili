@@ -164,7 +164,11 @@ class CarAdModel(nn.Module):
 
         self.transformer = Transformer(dim=2*2048, depth=12, heads=8, dim_head=64, mlp_dim=1024, dropout=0.2)
 
-        self.linear = nn.Linear(in_features=4096, out_features=100)
+        # self.linear = nn.Linear(in_features=4096, out_features=100)
+        self.mlp_head = nn.Sequential(
+            nn.LayerNorm(4096),
+            nn.Linear(4096, 100)
+        )
 
     def _prepare_x(self, x):
         if self.x_mean.device != x.device:
@@ -210,8 +214,10 @@ class CarAdModel(nn.Module):
         # print('')
         # print(ht.shape)
         # lin_input = torch.flatten(ht[-1])
-        output = self.linear(transformer_output)
 
+        # output = self.linear(transformer_output)
+        output = self.mlp_head(transformer_output)
+        
         output = output.view((10, 10))
 
         return output
