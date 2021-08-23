@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
 
+from einops import rearrange, repeat
+
 ENCODER_RESNET = [
     'resnet18', 'resnet34', 'resnet50'
 ]
