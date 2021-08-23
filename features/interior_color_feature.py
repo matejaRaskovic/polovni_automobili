@@ -31,7 +31,7 @@ class InteriorColorFeature():
 
         dbg = True
         if dbg and np.random.random(1) < 0.025:
-            print('Interior color')
+            print('\nInterior color')
             print(vec)
             print(target)
 

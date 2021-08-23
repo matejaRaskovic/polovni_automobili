@@ -38,7 +38,7 @@ class CarColorFeature():
 
         dbg = True
         if dbg and np.random.random(1) < 0.025:
-            print('Outside color')
+            print('\nOutside color')
             print(vec)
             print(target)
 

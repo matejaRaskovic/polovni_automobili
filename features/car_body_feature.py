@@ -28,7 +28,7 @@ class CarBodyFeature():
 
         dbg = True
         if dbg and np.random.random(1) < 0.025:
-            print('Car body')
+            print('\nCar body')
             print(vec)
             print(target)
 

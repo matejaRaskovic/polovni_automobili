@@ -30,7 +30,7 @@ class SeatMaterialFeature():
 
         dbg = True
         if dbg and np.random.random(1) < 0.025:
-            print('Seat material')
+            print('\nSeat material')
             print(vec)
             print(target)
 
