@@ -61,4 +61,5 @@ class InteriorColorFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
+        self.grad_weight = {1: 1.8946149392009264 - 0.5, 0: 0.6792609507992526 + 0.13}
         return self.grad_weight[self.d[sample]]

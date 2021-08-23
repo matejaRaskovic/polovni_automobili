@@ -60,4 +60,5 @@ class SeatMaterialFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
+        self.grad_weight = {1: 0.9933211900425015, 0: 1.0067692307692309}
         return self.grad_weight[self.d[sample]]

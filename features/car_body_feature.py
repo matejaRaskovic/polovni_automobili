@@ -58,4 +58,5 @@ class CarBodyFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
+        self.grad_weight = {0: 1.3858534519271497, 1: 0.7854999399831953, 2: 0.9946800425596596}
         return self.grad_weight[self.d[sample]]
