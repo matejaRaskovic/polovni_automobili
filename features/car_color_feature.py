@@ -58,9 +58,9 @@ class CarColorFeature():
     def calculateGradWeight(self, df):
         for sample in df[self.name()]:
             if sample in self.grad_weight:
-                self.grad_weight[sample] += 1
+                self.grad_weight[self.d[sample]] += 1
             else:
-                self.grad_weight[sample] = 1
+                self.grad_weight[self.d[sample]] = 1
 
         print(self.grad_weight)
         h = len(df.index) / len(self.grad_weight)
@@ -71,5 +71,5 @@ class CarColorFeature():
 
     def getWeightForSample(self, sample):
         # self.grad_weight = {'Bela': 1.7183723797780517, 'Crvena': 4.389291338582677, 'Siva': 0.5013851412124483, 'Crna': 0.636783184829792, 'Plava': 1.5990820424555363}
-        # return self.grad_weight[sample]
-        return 1
+        return self.grad_weight[self.d[sample]]
+        # return 1

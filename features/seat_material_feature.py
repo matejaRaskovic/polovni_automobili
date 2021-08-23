@@ -48,9 +48,9 @@ class SeatMaterialFeature():
     def calculateGradWeight(self, df):
         for sample in df[self.name()]:
             if sample in self.grad_weight:
-                self.grad_weight[sample] += 1
+                self.grad_weight[self.d[sample]] += 1
             else:
-                self.grad_weight[sample] = 1
+                self.grad_weight[self.d[sample]] = 1
 
         print(self.grad_weight)
         h = len(df.index) / len(self.grad_weight)
@@ -60,4 +60,4 @@ class SeatMaterialFeature():
         print(self.grad_weight)
 
     def getWeightForSample(self, sample):
-        return 1.
+        return self.grad_weight[self.d[sample]]
