@@ -71,6 +71,6 @@ class CarColorFeature():
 
     def getWeightForSample(self, sample):
         # self.grad_weight = {'Bela': 1.7183723797780517, 'Crvena': 4.389291338582677, 'Siva': 0.5013851412124483, 'Crna': 0.636783184829792, 'Plava': 1.5990820424555363}
-        self.grad_weight = {0: 0.7937894226103833, 2: 0.972073677956031, 1: 1.4054982817869417 - 0.2}
+        self.grad_weight = {0: 0.7937894226103833 + 0.1, 2: 0.972073677956031, 1: 1.4054982817869417 - 0.2}
         return self.grad_weight[self.d[sample]]
         # return 1
