@@ -3,6 +3,7 @@ import torch
 import numpy as np
 
 class CarBodyFeature():
+    num_classes = 3
     d = {'Limuzina': 0, 'Karavan': 1, 'Džip/SUV': 1, 'Monovolumen (MiniVan)': 1, 'Hečbek': 2}
     grad_weight = {}
 
@@ -10,7 +11,6 @@ class CarBodyFeature():
         pass
 
     def validDataMaskFromDF(self, df):
-        num_classes = 3
         return df['karoserija'].isin(['Limuzina', 'Karavan', 'Džip/SUV', 'Hečbek', 'Monovolumen (MiniVan)'])
 
     def name(self):
