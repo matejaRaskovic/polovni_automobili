@@ -205,7 +205,7 @@ class CarAdModel(nn.Module):
         # print(rnn_input.shape)
         # rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         transformer_output = self.transformer(rnn_input)
-        transformer_output = transformer_output[:, 0]
+        transformer_output = x.transformer_output(dim=1)
         # print(output.shape)
         # print('')
         # print(ht.shape)
