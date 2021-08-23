@@ -37,6 +37,7 @@ class InteriorColorFeature():
 
         return lossFun(vec, target)#*weight
 
+
     def nameToClassId(self, name):
         return self.d[name]
 
