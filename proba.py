@@ -11,7 +11,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleW
 
 
 URLS_all = []
-with open('all_cars.txt', 'r') as file:
+with open('4_feature_dataset_cars.txt', 'r') as file:
     for line in file:
         URLS_all.append(line)
 
@@ -33,7 +33,7 @@ for url in URLS:
 
 
     keys = data[0].keys()
-    with open('all_cars.csv', 'w', newline='', encoding="utf-8") as file:
+    with open('4_feature_dataset_cars.csv', 'w', newline='', encoding="utf-8") as file:
         dict_writer = csv.DictWriter(file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(data)

@@ -29,10 +29,14 @@ def download_images_for_url(car_ad_url_and_cnt):
     page = requests.get(car_ad_url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
 
+    data = None
     results = soup.find_all('script', type='application/ld+json')
     for d in results:
         if 'caption' in d.string:
             data = json.loads(d.string)
+
+    if data is None:
+        return
 
     os.makedirs('slike', exist_ok=True)
 
@@ -67,5 +71,5 @@ def get_images_from_urls(txt_file="all_cars.txt"):
 
 
 if __name__ == '__main__':
-    linkovi = get_images_from_urls()
+    linkovi = get_images_from_urls('4_feature_dataset_cars.txt')
 
