@@ -51,12 +51,12 @@ class CarAdDataset(Dataset):
         # print(self.data_info['materijal_enterijera'].value_counts())
 
         # Use this for oversampling
-        for feature in self.features:
-            max_size = self.data_info[feature.name()].value_counts().max()
-            lst = [self.data_info]
-            for class_index, group in self.data_info.groupby(feature.name()):
-                lst.append(group.sample(max_size - len(group), replace=True))
-            self.data_info = pd.concat(lst)
+        # for feature in self.features:
+        #     max_size = self.data_info[feature.name()].value_counts().max()
+        #     lst = [self.data_info]
+        #     for class_index, group in self.data_info.groupby(feature.name()):
+        #         lst.append(group.sample(max_size - len(group), replace=True))
+        #     self.data_info = pd.concat(lst)
 
         for feature in self.features:
             feature.calculateGradWeight(self.data_info)
