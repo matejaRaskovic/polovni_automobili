@@ -73,7 +73,7 @@ class CarAdModel(nn.Module):
                            batch_first=True,
                            bidirectional=True)
 
-        self.linear = nn.Linear(in_features=4*self.rnn_hidden_size, out_features=100)
+        self.linear = nn.Linear(in_features=2*self.rnn_hidden_size, out_features=100)
 
     def _prepare_x(self, x):
         if self.x_mean.device != x.device:
