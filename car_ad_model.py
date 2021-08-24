@@ -17,7 +17,7 @@ class Resnet(nn.Module):
         self.encoder = getattr(models, backbone)(pretrained=pretrained)
         del self.encoder.fc, self.encoder.avgpool
 
-        self.avgpool = nn.AdaptiveAvgPool2d((10, 10))
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
     def forward(self, x):
         features = []
@@ -32,7 +32,7 @@ class Resnet(nn.Module):
         x = self.encoder.layer3(x)
         x = self.encoder.layer4(x)
 
-        x = self.avgpool(x)
+        # x = self.avgpool(x)
 
         return x
 
@@ -59,14 +59,14 @@ class CarAdModel(nn.Module):
 
         self.feature_extractor = Resnet()
 
-        self.rnn_img_cols = nn.LSTM(input_size=2*2560,  # 512 for resnet 18
-                                    hidden_size=2*self.rnn_hidden_size,
+        self.rnn_img_cols = nn.LSTM(input_size=3584,  # 512 for resnet 18
+                                    hidden_size=self.rnn_hidden_size,
                                     num_layers=2,
                                     dropout=0.5,
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2*2048,  # 512 for resnet 18
+        self.rnn_imgs = nn.LSTM(input_size=2048,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
@@ -84,19 +84,35 @@ class CarAdModel(nn.Module):
     def forward(self, x, img_sizes):
         x = self._prepare_x(x)
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
-        feature_grid = torch.zeros((x.shape[0], 512, 10, 10))
+        # feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
+        rnn_input = torch.zeros((1, x.shape[0], 2048))
         for i in range(x.shape[0]):
             # print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
             # print(feature_grid[i:i+1, :].shape)
             # exit(1)
-            feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
+            # feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
+            # print(img_sizes[i, 1])
+            # print(img_sizes[i, 0])
+            # print('')
+            sample_feature_grid = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
+            # print(sample_feature_grid.shape)
+            sample_feature_grid = sample_feature_grid.view(
+                (sample_feature_grid.shape[0], 7 * sample_feature_grid.shape[1], sample_feature_grid.shape[3], 1))
+            sample_feature_grid = sample_feature_grid.view((sample_feature_grid.shape[0], sample_feature_grid.shape[2], sample_feature_grid.shape[1]))
+            # sample_feature_grid = sample_feature_grid.to(x.device)
+            # print(sample_feature_grid.shape)
+            rnn_output, (ht, ct) = self.rnn_img_cols(sample_feature_grid)
+            # print(ht.shape)
+            ht = ht.view((1, ht.shape[1], 2048))
+            rnn_input[0, i, :] = ht
+            # print(ht.shape)
 
-        feature_grid = feature_grid.view((feature_grid.shape[0], 10*feature_grid.shape[1], feature_grid.shape[2], 1))
-        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
-        feature_grid = feature_grid.to(x.device)
+        # feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
+        # feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
+        # feature_grid = feature_grid.to(x.device)
 
-        rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
-        ht = ht.view((1, ht.shape[1], 2*2048))
+        # rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
+        # ht = ht.view((1, ht.shape[1], 2048))
         # print(ht.shape)
 
 
@@ -110,7 +126,8 @@ class CarAdModel(nn.Module):
 
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
-        rnn_input = ht
+        rnn_input = rnn_input.to(x.device)
+        # rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # print(ht.shape)
         lin_input = torch.flatten(ht[-1])

@@ -13,7 +13,7 @@ class InteriorColorFeature():
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['boja_enterijera'].isin(['Crna', 'Bež', 'Smeđa', 'Siva', 'Druga'])
+        return df['boja_enterijera'].isin(['Crna', 'Bež', 'Siva'])
 
     def name(self):
         return 'boja_enterijera'
