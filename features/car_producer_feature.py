@@ -3,16 +3,16 @@ import torch
 import numpy as np
 
 class CarProducerFeature():
-    num_classes = 6
+    num_classes = 2
     # d = {'Volkswagen': 0, 'Audi': 1, 'BMW': 2, 'Opel': 3, 'Peugeot': 4, 'Fiat': 5}  # , 'Renault': 6, 'Mercedes Benz': 7}
-    d = {'Volkswagen': 0, 'Peugeot': 1, 'BMW': 2, 'Mercedes Benz': 3, 'Renault': 4, 'Fiat': 5}
+    d = {'Volkswagen': 0, 'Peugeot': 1}  # , 'BMW': 2, 'Mercedes Benz': 3, 'Renault': 4, 'Fiat': 5}
     grad_weight = {}
 
     def __init__(self):
         pass
 
     def validDataMaskFromDF(self, df):
-        return df['marka'].isin(['Volkswagen', 'Peugeot', 'BMW', 'Mercedes Benz', 'Renault', 'Fiat'])  # , 'Opel', 'Peugeot', 'Fiat'])  # , 'Renault', 'Mercedes Benz'])
+        return df['marka'].isin(['Volkswagen', 'Peugeot']) # , 'BMW', 'Mercedes Benz', 'Renault', 'Fiat'])  # , 'Opel', 'Peugeot', 'Fiat'])  # , 'Renault', 'Mercedes Benz'])
 
     def name(self):
         return 'marka'
