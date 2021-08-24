@@ -211,7 +211,7 @@ class CarAdModel(nn.Module):
 
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
-        # rnn_input = rnn_input.to(x.device)
+        rnn_input = rnn_input.to(x.device)
         # # rnn_input = ht
         # rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # # print(ht.shape)
