@@ -160,6 +160,8 @@ class CarAdModel(nn.Module):
                            batch_first=True,
                            bidirectional=False)
 
+        self.transformer = Transformer(dim=2 * 2048, depth=12, heads=8, dim_head=64, mlp_dim=1024, dropout=0.2)
+
         self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
 
     def _prepare_x(self, x):
