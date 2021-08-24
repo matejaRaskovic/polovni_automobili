@@ -96,7 +96,7 @@ class CarAdModel(nn.Module):
             # print('')
             sample_feature_grid = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
             # print(sample_feature_grid.shape)
-            print(sample_feature_grid)
+            print(sample_feature_grid.shape)
             sample_feature_grid = sample_feature_grid.view(
                 (sample_feature_grid.shape[0], 7 * sample_feature_grid.shape[1], sample_feature_grid.shape[3], 1))
             sample_feature_grid = sample_feature_grid.view((sample_feature_grid.shape[0], sample_feature_grid.shape[2], sample_feature_grid.shape[1]))
