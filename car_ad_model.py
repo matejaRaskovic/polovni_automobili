@@ -95,7 +95,7 @@ class CarAdModel(nn.Module):
             sample_feature_grid = sample_feature_grid.view(
                 (sample_feature_grid.shape[0], 10 * sample_feature_grid.shape[1], sample_feature_grid.shape[3], 1))
             sample_feature_grid = sample_feature_grid.view((sample_feature_grid.shape[0], sample_feature_grid.shape[2], sample_feature_grid.shape[1]))
-            sample_feature_grid = sample_feature_grid.to(x.device)
+            # sample_feature_grid = sample_feature_grid.to(x.device)
             # print(sample_feature_grid.shape)
             rnn_output, (ht, ct) = self.rnn_img_cols(sample_feature_grid)
             ht = ht.view((1, ht.shape[1], 2048))
@@ -121,6 +121,7 @@ class CarAdModel(nn.Module):
 
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
+        rnn_input = rnn_input.to(x.device)
         # rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # print(ht.shape)
