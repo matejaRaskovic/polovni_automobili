@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 
-csv_path = 'all_cars.csv'
+csv_path = 'producer_classification_cars.csv'
 imgs_fldr = 'slike'
 filter_without_images = True
 
