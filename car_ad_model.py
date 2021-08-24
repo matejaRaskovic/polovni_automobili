@@ -85,6 +85,7 @@ class CarAdModel(nn.Module):
         x = self._prepare_x(x)
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
         # feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
+        rnn_input = torch.zeros((1, x.shape[0], 2048))
         for i in range(x.shape[0]):
             # print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
             # print(feature_grid[i:i+1, :].shape)
@@ -95,9 +96,11 @@ class CarAdModel(nn.Module):
                 (sample_feature_grid.shape[0], 10 * sample_feature_grid.shape[1], sample_feature_grid.shape[3], 1))
             sample_feature_grid = sample_feature_grid.view((sample_feature_grid.shape[0], sample_feature_grid.shape[2], sample_feature_grid.shape[1]))
             sample_feature_grid = sample_feature_grid.to(x.device)
-            print(sample_feature_grid.shape)
+            # print(sample_feature_grid.shape)
             rnn_output, (ht, ct) = self.rnn_img_cols(sample_feature_grid)
-            print(ht.shape)
+            ht = ht.view((1, ht.shape[1], 2048))
+            rnn_input[0, i, :] = ht
+            # print(ht.shape)
 
         # feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
         # feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
@@ -118,7 +121,7 @@ class CarAdModel(nn.Module):
 
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
-        rnn_input = ht
+        # rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # print(ht.shape)
         lin_input = torch.flatten(ht[-1])
