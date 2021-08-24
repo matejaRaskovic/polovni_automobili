@@ -90,7 +90,7 @@ class CarAdDataset(Dataset):
         # print(ad_id)
 
         fldr_pth = os.path.join('slike', ad_id)
-        imgs = torch.FloatTensor(np.zeros((50, 3, 300, 300)))
+        imgs = torch.FloatTensor(np.zeros((50, 3, 300, 800)))
         num_imgs = len(os.listdir(fldr_pth))
         i = 0
         img_sizes = np.zeros((50, 2))
@@ -99,10 +99,10 @@ class CarAdDataset(Dataset):
 
             img_as_img = Image.open(file_pth)
             # print(img_as_img.size)
-            if img_as_img.size[0] > img_as_img.size[1]:
-                scale = 300/img_as_img.size[0]
-            else:
-                scale = 300/img_as_img.size[1]
+            # if img_as_img.size[0] > img_as_img.size[1]:
+            #     scale = 300/img_as_img.size[0]
+            # else:
+            scale = 300/img_as_img.size[1]
             newsize = (int(round(img_as_img.size[0]*scale)), int(round(img_as_img.size[1]*scale)))
             img_sizes[i, 0] = newsize[0]
             img_sizes[i, 1] = newsize[1]
