@@ -73,7 +73,7 @@ class CarAdModel(nn.Module):
                            batch_first=True,
                            bidirectional=True)
 
-        self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
+        self.linear = nn.Linear(in_features=4*self.rnn_hidden_size, out_features=100)
 
     def _prepare_x(self, x):
         if self.x_mean.device != x.device:
@@ -112,8 +112,8 @@ class CarAdModel(nn.Module):
 
         rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
-        print(ht.shape)
-        lin_input = torch.flatten(ht[-1])
+        # print(ht.shape)
+        lin_input = torch.flatten(ht)
         output = self.linear(lin_input)
 
         output = output.view((10, 10))
