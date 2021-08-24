@@ -71,7 +71,7 @@ class CarAdModel(nn.Module):
                            num_layers=2,
                            dropout=0.5,
                            batch_first=True,
-                           bidirectional=False)
+                           bidirectional=True)
 
         self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
 
@@ -112,7 +112,7 @@ class CarAdModel(nn.Module):
 
         rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
-        # print(ht.shape)
+        print(ht.shape)
         lin_input = torch.flatten(ht[-1])
         output = self.linear(lin_input)
 
