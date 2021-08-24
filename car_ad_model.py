@@ -112,7 +112,7 @@ class CarAdModel(nn.Module):
 
         rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
-        print(rnn_output.shape)
+        # print(rnn_output.shape)
         # print(ht.shape)
         lin_input = rnn_output.mean(dim=1)
         lin_input = torch.flatten(lin_input[-1])
