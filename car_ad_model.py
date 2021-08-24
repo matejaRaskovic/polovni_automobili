@@ -60,13 +60,13 @@ class CarAdModel(nn.Module):
         self.feature_extractor = Resnet()
 
         self.rnn_img_cols = nn.LSTM(input_size=2560,  # 512 for resnet 18
-                                    hidden_size=2*self.rnn_hidden_size,
+                                    hidden_size=self.rnn_hidden_size//2,
                                     num_layers=2,
                                     dropout=0.5,
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2*2048,  # 512 for resnet 18
+        self.rnn_imgs = nn.LSTM(input_size=2048//2,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size,
                            num_layers=2,
                            dropout=0.5,
