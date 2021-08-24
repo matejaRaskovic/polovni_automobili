@@ -60,20 +60,20 @@ class CarAdModel(nn.Module):
         self.feature_extractor = Resnet()
 
         self.rnn_img_cols = nn.LSTM(input_size=3584,  # 512 for resnet 18
-                                    hidden_size=self.rnn_hidden_size,
+                                    hidden_size=self.rnn_hidden_size//2,
                                     num_layers=2,
                                     dropout=0.5,
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2048,  # 512 for resnet 18
-                           hidden_size=self.rnn_hidden_size,
+        self.rnn_imgs = nn.LSTM(input_size=512,  # 512 for resnet 18
+                           hidden_size=self.rnn_hidden_size//2,
                            num_layers=2,
                            dropout=0.5,
                            batch_first=True,
-                           bidirectional=False)
+                           bidirectional=True)
 
-        self.linear = nn.Linear(in_features=self.rnn_hidden_size, out_features=100)
+        self.linear = nn.Linear(in_features=self.rnn_hidden_size//2, out_features=100)
 
     def _prepare_x(self, x):
         if self.x_mean.device != x.device:
@@ -85,7 +85,7 @@ class CarAdModel(nn.Module):
         x = self._prepare_x(x)
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
         # feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
-        rnn_input = torch.zeros((1, x.shape[0], 2048))
+        rnn_input = torch.zeros((1, x.shape[0], 512))
         for i in range(x.shape[0]):
             # print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
             # print(feature_grid[i:i+1, :].shape)
@@ -102,7 +102,7 @@ class CarAdModel(nn.Module):
             # sample_feature_grid = sample_feature_grid.to(x.device)
             # print(sample_feature_grid.shape)
             rnn_output, (ht, ct) = self.rnn_img_cols(sample_feature_grid)
-            ht = ht.view((1, ht.shape[1], 2048))
+            ht = ht[-2:].view((1, ht.shape[1], 512))
             rnn_input[0, i, :] = ht
             # print(ht.shape)
 
@@ -129,7 +129,7 @@ class CarAdModel(nn.Module):
         # rnn_input = ht
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # print(ht.shape)
-        lin_input = torch.flatten(ht[-1])
+        lin_input = torch.flatten(ht[-2:])
         output = self.linear(lin_input)
 
         output = output.view((10, 10))
