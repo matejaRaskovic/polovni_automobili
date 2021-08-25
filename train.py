@@ -22,6 +22,8 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
 
     total_loss = 0
 
+    conf_mats = {}
+
     for i in range(images.shape[0]):
         imgs_for_sample = images[i, :]  # using only one sample from batch
         imgs_for_sample = imgs_for_sample[0:num_imgs[i], :]  # keeping only valid images - removing the padding
@@ -36,10 +38,14 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
             # print(labels[feature.name()][i])
             loss += feature.calculateLoss(vec, labels[feature.name()][0][i], labels[feature.name()][1][i], device)
             conf_mat = feature.getConfMat(vec, labels[feature.name()][0][i])
+            if feature.name() in conf_mats:
+                conf_mats[feature.name()] += conf_mat
+            else:
+                conf_mats[feature.name()] = conf_mat
 
         total_loss += loss
 
-    return total_loss
+    return total_loss, conf_mats
 
 
 def main():
@@ -154,6 +160,9 @@ def main():
         net.train()
         iterator_train = iter(loader_train)
         train_total_loss = 0
+
+        conf_mats = {}
+
         for i in trange(len(loader_train),
                         desc='Train ep%s' % ith_epoch, position=1):
 
@@ -168,8 +177,16 @@ def main():
             img_sizes = next_data[3]
 
             with torch.cuda.amp.autocast():
-                loss = feed_forward(net, images, num_imgs, img_sizes, labels, device)
+                loss, c_mats = feed_forward(net, images, num_imgs, img_sizes, labels, device)
                 print(loss)
+
+            for key in c_mats:
+                if key in conf_mats:
+                    conf_mats[key] += c_mats[key]
+                else:
+                    conf_mats[key] = c_mats[key]
+
+            print(conf_mats)
 
             scaler.scale(loss).backward()
 
