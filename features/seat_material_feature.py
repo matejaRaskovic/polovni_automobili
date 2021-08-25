@@ -62,3 +62,11 @@ class SeatMaterialFeature():
     def getWeightForSample(self, sample):
         self.grad_weight = {1: 0.9933211900425015, 0: 1.0067692307692309}
         return self.grad_weight[self.d[sample]]
+
+    def getConfMat(self, vector, target):
+        conf_mat = np.zeros((self.num_classes, self.num_classes))
+        tgt = target.cpu().detach().numpy().astype(int)
+        est = vector.cpu().detach().numpy()
+        est = np.argmax(est[0, :self.num_classes]).astype(int)
+        conf_mat[tgt, est] = 1
+        return conf_mat

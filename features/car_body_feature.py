@@ -60,3 +60,11 @@ class CarBodyFeature():
     def getWeightForSample(self, sample):
         self.grad_weight = {0: 1.3858534519271497, 1: 0.7854999399831953, 2: 0.9946800425596596}
         return self.grad_weight[self.d[sample]]
+
+    def getConfMat(self, vector, target):
+        conf_mat = np.zeros((self.num_classes, self.num_classes))
+        tgt = target.cpu().detach().numpy().astype(int)
+        est = vector.cpu().detach().numpy()
+        est = np.argmax(est[0, :self.num_classes]).astype(int)
+        conf_mat[tgt, est] = 1
+        return conf_mat

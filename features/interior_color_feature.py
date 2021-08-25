@@ -63,3 +63,11 @@ class InteriorColorFeature():
     def getWeightForSample(self, sample):
         self.grad_weight = {1: 1.8946149392009264, 0: 0.6792609507992526}
         return self.grad_weight[self.d[sample]]
+
+    def getConfMat(self, vector, target):
+        conf_mat = np.zeros((self.num_classes, self.num_classes))
+        tgt = target.cpu().detach().numpy().astype(int)
+        est = vector.cpu().detach().numpy()
+        est = np.argmax(est[0, :self.num_classes]).astype(int)
+        conf_mat[tgt, est] = 1
+        return conf_mat

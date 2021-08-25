@@ -74,3 +74,11 @@ class CarColorFeature():
         self.grad_weight = {0: 0.7937894226103833, 2: 0.972073677956031, 1: 1.4054982817869417}
         return self.grad_weight[self.d[sample]]
         # return 1
+
+    def getConfMat(self, vector, target):
+        conf_mat = np.zeros((self.num_classes, self.num_classes))
+        tgt = target.cpu().detach().numpy().astype(int)
+        est = vector.cpu().detach().numpy()
+        est = np.argmax(est[0, :self.num_classes]).astype(int)
+        conf_mat[tgt, est] = 1
+        return conf_mat
