@@ -189,7 +189,7 @@ def main():
                 print(key)
                 print(conf_mats[key])
 
-            if i % 50:
+            if i % 50 == 0:
                 conf_mats = {}
 
 
