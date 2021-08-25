@@ -64,7 +64,7 @@ class CarProducerFeature():
 
     def getConfMat(self, vector, target):
         conf_mat = np.zeros((self.num_classes, self.num_classes))
-        tgt = target.cpu().detach().numpy()
-        est = vector.cpu().detach().numpy()
+        tgt = target.cpu().detach().numpy().astype(int)
+        est = vector.cpu().detach().numpy().astype(int)
         conf_mat[tgt, est] = 1
         return conf_mat
