@@ -189,6 +189,8 @@ def main():
                 print(key)
                 print(conf_mats[key])
 
+            if i % 50:
+                conf_mats = {}
 
 
             scaler.scale(loss).backward()
