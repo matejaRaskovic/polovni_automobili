@@ -62,9 +62,9 @@ class CarProducerFeature():
             if self.d[key] == id:
                 return key
 
-    def getConfMat(self, vector, target):
-        conf_mat = np.zeros((self.num_classes, self.num_classes))
-        tgt = target.cpu().detach().numpy()
-        print(tgt)
-        est = vector.cpu().detach().numpy()
-        print(est)
+    # def getConfMat(self, vector, target):
+    #     conf_mat = np.zeros((self.num_classes, self.num_classes))
+    #     tgt = target.cpu().detach().numpy()
+    #     print(tgt)
+    #     est = vector.cpu().detach().numpy()
+    #     print(est)

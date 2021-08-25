@@ -35,7 +35,7 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
         for feature in CarAdDataset.features:
             vec = est[feature.pos():feature.pos()+1]
             loss += feature.calculateLoss(vec, labels[feature.name()][0][i], labels[feature.name()][1][i], device)
-            conf_mat = feature.getConfMat(vec, labels[feature.name()][0][i], labels[feature.name()][1][i])
+            # conf_mat = feature.getConfMat(vec, labels[feature.name()][0][i], labels[feature.name()][1][i])
 
         total_loss += loss
 
