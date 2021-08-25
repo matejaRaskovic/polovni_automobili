@@ -66,5 +66,6 @@ class CarProducerFeature():
         conf_mat = np.zeros((self.num_classes, self.num_classes))
         tgt = target.cpu().detach().numpy().astype(int)
         est = vector.cpu().detach().numpy().astype(int)
+        est = np.argmax(est[0, :self.num_classes])
         conf_mat[tgt, est] = 1
         return conf_mat
