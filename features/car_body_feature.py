@@ -3,6 +3,7 @@ import torch
 import numpy as np
 
 class CarBodyFeature():
+    num_classes = 4
     d = {'Limuzina': 0, 'Karavan': 1, 'Džip/SUV': 2, 'Hečbek': 3}
     grad_weight = {}
 

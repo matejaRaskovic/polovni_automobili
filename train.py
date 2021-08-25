@@ -22,6 +22,8 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
 
     total_loss = 0
 
+    conf_mat = {}
+
     for i in range(images.shape[0]):
         imgs_for_sample = images[i, :]  # using only one sample from batch
         imgs_for_sample = imgs_for_sample[0:num_imgs[i], :]  # keeping only valid images - removing the padding
@@ -32,9 +34,8 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
         loss = 0
         for feature in CarAdDataset.features:
             vec = est[feature.pos():feature.pos()+1]
-            # print(feature.name())
-            # print(labels[feature.name()][i])
             loss += feature.calculateLoss(vec, labels[feature.name()][0][i], labels[feature.name()][1][i], device)
+            conf_mat = feature.getConfMat(vec, labels[feature.name()][0][i], labels[feature.name()][1][i])
 
         total_loss += loss
 
