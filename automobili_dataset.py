@@ -18,11 +18,11 @@ from features.car_color_feature import CarColorFeature
 from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
-    features = [#CarProducerFeature(),
-                CarBodyFeature(),
-                SeatMaterialFeature(),
-                CarColorFeature(),
-                InteriorColorFeature()
+    features = [CarProducerFeature(),
+                #CarBodyFeature(),
+                #SeatMaterialFeature(),
+                #CarColorFeature(),
+                #InteriorColorFeature()
                 ]
 
     def __init__(self, csv_path):
