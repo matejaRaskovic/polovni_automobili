@@ -185,8 +185,11 @@ def main():
                     conf_mats[key] += c_mats[key]
                 else:
                     conf_mats[key] = c_mats[key]
+                # for debugging
+                print(key)
+                print(conf_mats[key])
 
-            print(conf_mats)
+
 
             scaler.scale(loss).backward()
 
