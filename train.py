@@ -10,6 +10,8 @@ from torch import optim
 from torch.utils.data import DataLoader
 import torch
 
+from torch.optim.lr_scheduler import ExponentialLR
+
 from car_ad_model import CarAdModel
 from automobili_dataset import CarAdDataset
 
@@ -149,6 +151,9 @@ def main():
     # Create grad scaler used for automatic mixed precision training
     scaler = torch.cuda.amp.GradScaler()
 
+    # Learning rate scheduler
+    scheduler = ExponentialLR(optimizer, gamma=0.9)
+
     # Init variable
     args.max_iters = args.epochs * len(loader_train)
     args.cur_iter = 0
@@ -193,7 +198,6 @@ def main():
             if i % 50 == 0:
                 conf_mats = {}
 
-
             scaler.scale(loss).backward()
 
             # Unscales the gradients of optimizer's assigned params in-place
@@ -210,6 +214,8 @@ def main():
             scaler.update()
 
             train_total_loss += loss.cpu().detach()
+
+        scheduler.step()
 
         print("\n\n\nTOTAL LOSS: ")
         print(train_total_loss)
