@@ -83,7 +83,7 @@ NUM_ADS = [2000,  # BMW limuzina
            5000,  # karavni svih marki
            2000,  # VW hecbek
            1500,  # Peugeot hecbek
-           1500,  # Fiat hecbek - bez Pande i 500 (oni bas i nisu klasicni hecbekovi)
+           1500  # Fiat hecbek - bez Pande i 500 (oni bas i nisu klasicni hecbekovi)
            ]
 
 URLS_FILE_NAME = "car_body_dataset.txt"
