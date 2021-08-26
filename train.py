@@ -94,7 +94,7 @@ def main():
                         help='manual seed')
     parser.add_argument('--disp_iter', type=int, default=1,
                         help='iterations frequency to display')
-    parser.add_argument('--save_every', type=int, default=25,
+    parser.add_argument('--save_every', type=int, default=5,
                         help='epochs frequency to save state_dict')
     parser.add_argument('--gpu_id', type=int, default=1,
                         help='select gpu')
@@ -155,93 +155,112 @@ def main():
     # Start training
     for ith_epoch in trange(1, args.epochs + 1, desc='Epoch', unit='ep'):
 
-        # Train phase
-        device = torch.device(arg_device)
-        net.train()
-        iterator_train = iter(loader_train)
-        train_total_loss = 0
-
-        conf_mats = {}
-
-        for i in trange(len(loader_train),
-                        desc='Train ep%s' % ith_epoch, position=1):
-
-            args.cur_iter += 1
-            try:
-                next_data = next(iterator_train)
-            except AssertionError:
-                continue
-            images = next_data[0]
-            num_imgs = next_data[1]
-            labels = next_data[2]
-            img_sizes = next_data[3]
-
-            with torch.cuda.amp.autocast():
-                loss, c_mats = feed_forward(net, images, num_imgs, img_sizes, labels, device)
-                print(loss)
-
-            for key in c_mats:
-                if key in conf_mats:
-                    conf_mats[key] += c_mats[key]
-                else:
-                    conf_mats[key] = c_mats[key]
-                # for debugging
-                print(key)
-                print(conf_mats[key])
-
-            if i % 50 == 0:
-                conf_mats = {}
-
-
-            scaler.scale(loss).backward()
-
-            # Unscales the gradients of optimizer's assigned params in-place
-            scaler.unscale_(optimizer)
-
-            # Since the gradients of optimizer's assigned params are unscaled, clips as usual:
-            nn.utils.clip_grad_norm_(net.parameters(), 3.0, norm_type='inf')
-
-            # optimizer's gradients are already unscaled, so scaler.step does not unscale them,
-            # although it still skips optimizer.step() if the gradients contain infs or NaNs.
-            scaler.step(optimizer)
-
-            # Updates the scale for next iteration.
-            scaler.update()
-
-            train_total_loss += loss.cpu().detach()
-
-        print("\n\n\nTOTAL LOSS: ")
-        print(train_total_loss)
-        print('\n\n')
-
-        with open(os.path.join(args.ckpt, args.id, 'train_loss_log.txt'), 'a') as log_txt:
-            log_txt.write(str(ith_epoch) + '  ' + str(train_total_loss) + '\n')
+        # # Train phase
+        # device = torch.device(arg_device)
+        # net.train()
+        # iterator_train = iter(loader_train)
+        # train_total_loss = 0
+        #
+        # conf_mats = {}
+        #
+        # for i in trange(len(loader_train),
+        #                 desc='Train ep%s' % ith_epoch, position=1):
+        #
+        #     args.cur_iter += 1
+        #     try:
+        #         next_data = next(iterator_train)
+        #     except AssertionError:
+        #         continue
+        #     images = next_data[0]
+        #     num_imgs = next_data[1]
+        #     labels = next_data[2]
+        #     img_sizes = next_data[3]
+        #
+        #     with torch.cuda.amp.autocast():
+        #         loss, c_mats = feed_forward(net, images, num_imgs, img_sizes, labels, device)
+        #         print(loss)
+        #
+        #     for key in c_mats:
+        #         if key in conf_mats:
+        #             conf_mats[key] += c_mats[key]
+        #         else:
+        #             conf_mats[key] = c_mats[key]
+        #         # for debugging
+        #         print(key)
+        #         print(conf_mats[key])
+        #
+        #     if i % 50 == 0:
+        #         conf_mats = {}
+        #
+        #
+        #     scaler.scale(loss).backward()
+        #
+        #     # Unscales the gradients of optimizer's assigned params in-place
+        #     scaler.unscale_(optimizer)
+        #
+        #     # Since the gradients of optimizer's assigned params are unscaled, clips as usual:
+        #     nn.utils.clip_grad_norm_(net.parameters(), 3.0, norm_type='inf')
+        #
+        #     # optimizer's gradients are already unscaled, so scaler.step does not unscale them,
+        #     # although it still skips optimizer.step() if the gradients contain infs or NaNs.
+        #     scaler.step(optimizer)
+        #
+        #     # Updates the scale for next iteration.
+        #     scaler.update()
+        #
+        #     train_total_loss += loss.cpu().detach()
+        #
+        # print("\n\n\nTOTAL LOSS: ")
+        # print(train_total_loss)
+        # print('\n\n')
+        #
+        # with open(os.path.join(args.ckpt, args.id, 'train_loss_log.txt'), 'a') as log_txt:
+        #     log_txt.write(str(ith_epoch) + '  ' + str(train_total_loss) + '\n')
 
         # Valid phase
-        # net.eval()
-        # if args.valid_csv:
-        #     iterator_valid = iter(loader_valid)
-        #     total_valid_loss = 0
-        #     valid_num = 0
-        #     for i in trange(len(loader_valid),
-        #                     desc='Valid ep%d' % ith_epoch, position=2):
-        #
-        #         try:
-        #             next_data = next(iterator_valid)
-        #         except AssertionError:
-        #             continue
-        #         images = next_data[0]
-        #         num_imgs = next_data[1]
-        #         labels = next_data[2]
-        #
-        #         with torch.cuda.amp.autocast() and torch.no_grad():
-        #             loss = feed_forward(net, images, num_imgs, labels, device)
-        #             total_valid_loss += loss
-        #
-        #     # Save best validation loss model
-        #     if total_valid_loss < args.best_valid_loss:
-        #         args.best_valid_loss = total_valid_loss
-        #         torch.save(net.state_dict(), os.path.join(args.ckpt, args.id, 'best_valid.pth'))  # this is temporary
+        net.eval()
+        if args.valid_csv:
+            iterator_valid = iter(loader_valid)
+            total_valid_loss = 0
+            valid_num = 0
+
+            conf_mats = {}
+
+            for i in trange(len(loader_valid),
+                            desc='Valid ep%d' % ith_epoch, position=2):
+
+                try:
+                    next_data = next(iterator_valid)
+                except AssertionError:
+                    continue
+                images = next_data[0]
+                num_imgs = next_data[1]
+                labels = next_data[2]
+
+                with torch.cuda.amp.autocast() and torch.no_grad():
+                    loss, c_mats = feed_forward(net, images, num_imgs, labels, device)
+
+                for key in c_mats:
+                    if key in conf_mats:
+                        conf_mats[key] += c_mats[key]
+                    else:
+                        conf_mats[key] = c_mats[key]
+                    # for debugging
+                    print(key)
+                    print(conf_mats[key])
+
+                if i % 50 == 0:
+                    conf_mats = {}
+
+                total_valid_loss += loss.cpu().detach()
+
+            with open(os.path.join(args.ckpt, args.id, 'valid_loss_log.txt'), 'a') as log_txt:
+                log_txt.write(str(ith_epoch) + '  ' + str(total_valid_loss) + '\n')
+
+            # Save best validation loss model
+            if total_valid_loss < args.best_valid_loss:
+                args.best_valid_loss = total_valid_loss
+                torch.save(net.state_dict(), os.path.join(args.ckpt, args.id, 'best_valid.pth'))  # this is temporary
 
         if ith_epoch % args.save_every == 0:
             torch.save(net.state_dict(),
