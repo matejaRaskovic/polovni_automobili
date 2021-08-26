@@ -60,20 +60,20 @@ class CarAdModel(nn.Module):
         self.feature_extractor = Resnet()
 
         self.rnn_img_cols = nn.LSTM(input_size=2560,  # 512 for resnet 18
-                                    hidden_size=self.rnn_hidden_size//4,
+                                    hidden_size=self.rnn_hidden_size//2,
                                     num_layers=2,
                                     dropout=0.5,
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2048//4,  # 512 for resnet 18
-                           hidden_size=self.rnn_hidden_size//4,
+        self.rnn_imgs = nn.LSTM(input_size=2048//2,  # 512 for resnet 18
+                           hidden_size=self.rnn_hidden_size//2,
                            num_layers=2,
                            dropout=0.5,
                            batch_first=True,
                            bidirectional=True)
 
-        self.linear = nn.Linear(in_features=2*self.rnn_hidden_size//4, out_features=100)
+        self.linear = nn.Linear(in_features=2*self.rnn_hidden_size//2, out_features=100)
 
     def _prepare_x(self, x):
         if self.x_mean.device != x.device:
@@ -96,7 +96,7 @@ class CarAdModel(nn.Module):
         feature_grid = feature_grid.to(x.device)
 
         rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
-        ht = ht.view((1, ht.shape[1], 2048//4))
+        ht = ht.view((1, ht.shape[1], 2048//2))
         # print(ht.shape)
 
 
