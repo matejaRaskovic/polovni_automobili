@@ -78,5 +78,5 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    linkovi = get_images_from_urls(args.urls)
+    linkovi = get_images_from_urls(args.urls_txt)
 
