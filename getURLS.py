@@ -15,22 +15,33 @@ import re
 SEARCH_URL_GENERAL = "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&brand=_BRAND_TO_REPLACE_&city_distance=0&showOldNew=all&without_price=1"
 brands = ['volkswagen', 'bmw', 'peugeot', 'fiat', 'renault', 'mercedes-benz']
 
-SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3837",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2573&interior_material%5B0%5D=3830&interior_color%5B0%5D=3836",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=2&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2573&interior_material%5B0%5D=3831&interior_material%5B1%5D=3832&interior_color%5B0%5D=3836",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2574&color%5B1%5D=255&color%5B2%5D=2576&interior_material%5B0%5D=3831&interior_material%5B1%5D=3832&interior_color%5B0%5D=3836",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=59&color%5B1%5D=2575&color%5B2%5D=256&color%5B3%5D=2578&color%5B4%5D=57&color%5B5%5D=260&color%5B6%5D=2577&color%5B7%5D=261&color%5B8%5D=262&color%5B9%5D=263&interior_material%5B0%5D=3831&interior_material%5B1%5D=3832&interior_color%5B0%5D=3836",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=59&color%5B1%5D=2575&color%5B2%5D=256&color%5B3%5D=2578&color%5B4%5D=57&color%5B5%5D=260&color%5B6%5D=2577&color%5B7%5D=261&color%5B8%5D=262&color%5B9%5D=263&interior_material%5B0%5D=3830&interior_color%5B0%5D=3836",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2574&color%5B1%5D=255&color%5B2%5D=2576&interior_material%5B0%5D=3830&interior_color%5B0%5D=3836"]
+# This was a try to generate balanced data set for everything
+# SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3837",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2573&interior_material%5B0%5D=3830&interior_color%5B0%5D=3836",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=2&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2573&interior_material%5B0%5D=3831&interior_material%5B1%5D=3832&interior_color%5B0%5D=3836",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2574&color%5B1%5D=255&color%5B2%5D=2576&interior_material%5B0%5D=3831&interior_material%5B1%5D=3832&interior_color%5B0%5D=3836",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=59&color%5B1%5D=2575&color%5B2%5D=256&color%5B3%5D=2578&color%5B4%5D=57&color%5B5%5D=260&color%5B6%5D=2577&color%5B7%5D=261&color%5B8%5D=262&color%5B9%5D=263&interior_material%5B0%5D=3831&interior_material%5B1%5D=3832&interior_color%5B0%5D=3836",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=59&color%5B1%5D=2575&color%5B2%5D=256&color%5B3%5D=2578&color%5B4%5D=57&color%5B5%5D=260&color%5B6%5D=2577&color%5B7%5D=261&color%5B8%5D=262&color%5B9%5D=263&interior_material%5B0%5D=3830&interior_color%5B0%5D=3836",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&chassis%5B0%5D=277&chassis%5B1%5D=2631&chassis%5B2%5D=278&chassis%5B3%5D=2636&chassis%5B4%5D=2632&chassis%5B5%5D=2635&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2574&color%5B1%5D=255&color%5B2%5D=2576&interior_material%5B0%5D=3830&interior_color%5B0%5D=3836"]
+#
+# NUM_ADS = [10000,  # svi sa svetlom unutrasnjoscu
+#            1000,  # tamna unutrasnjost, svetla spoljasnjost, stof
+#            10000,  # tamna unutrasnjost, svetla spoljasnjost, koza
+#            1300,  # tamno unutra, tamno van, koza
+#            1000,  # tamno unutra, boja van, koza
+#            1500,  # tamno unutra, boja van, stof
+#            1000  # tamno untura, tamno van, stof
+#            ]
 
-NUM_ADS = [10000,  # svi sa svetlom unutrasnjoscu
-           1000,  # tamna unutrasnjost, svetla spoljasnjost, stof
-           10000,  # tamna unutrasnjost, svetla spoljasnjost, koza
-           1300,  # tamno unutra, tamno van, koza
-           1000,  # tamno unutra, boja van, koza
-           1500,  # tamno unutra, boja van, stof
-           1000  # tamno untura, tamno van, stof
-           ]
+# Dataset for interior color
+SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?brand=&brand2=&price_from=&price_to=&year_from=&year_to=&flywheel=&atest=&door_num=&submit_1=&without_price=1&date_limit=&showOldNew=all&modeltxt=&engine_volume_from=&engine_volume_to=&power_from=&power_to=&mileage_from=&mileage_to=&emission_class=&seat_num=&wheel_side=&registration=&country=&country_origin=&interior_color%5B%5D=3837&city=&registration_price=&page=&sort=",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?brand=&brand2=&price_from=&price_to=&year_from=&year_to=&flywheel=&atest=&door_num=&submit_1=&without_price=1&date_limit=&showOldNew=all&modeltxt=&engine_volume_from=&engine_volume_to=&power_from=&power_to=&mileage_from=&mileage_to=&emission_class=&seat_num=&wheel_side=&registration=&country=&country_origin=&interior_color%5B%5D=3836&city=&registration_price=&page=&sort="]
+
+NUM_ADS = [3200,  # this is how many of light color there are
+           3200]
+
+URLS_FILE_NAME = "interior_color_dataset.txt"
+
 def createHtmlFile(url, html_file="webpage.html"):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     page = requests.get(url, headers=headers)
@@ -134,7 +145,6 @@ if __name__ == "__main__":
             all_cars += page_cars
     
     # Name of txt file to store URLs of individual cars
-    URLS_FILE_NAME = "4_feature_dataset_cars.txt"
     with open(URLS_FILE_NAME, 'w') as file:
         for car in all_cars:
             file.write(car + "\n")
