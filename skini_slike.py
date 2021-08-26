@@ -59,14 +59,8 @@ def download_images_for_url(car_ad_url_and_cnt):
     print('')
 
 
-def get_images_from_urls():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--urls_txt', required=True,
-                        help='path to the txt containing urls which should be visited')
-
-    args = parser.parse_args()
-
-    with open(args.urls_txt, 'r') as urls_file:
+def get_images_from_urls(urls_txt):
+    with open(urls_txt, 'r') as urls_file:
         urls = []
         i = 1
         for url in urls_file:
@@ -78,5 +72,11 @@ def get_images_from_urls():
 
 
 if __name__ == '__main__':
-    linkovi = get_images_from_urls('4_feature_dataset_cars.txt')
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--urls_txt', required=True,
+                        help='path to the txt containing urls which should be visited')
+
+    args = parser.parse_args()
+
+    linkovi = get_images_from_urls(args.urls)
 
