@@ -236,9 +236,10 @@ def main():
                 images = next_data[0]
                 num_imgs = next_data[1]
                 labels = next_data[2]
+                img_sizes = next_data[3]
 
                 with torch.cuda.amp.autocast() and torch.no_grad():
-                    loss, c_mats = feed_forward(net, images, num_imgs, labels, device)
+                    loss, c_mats = feed_forward(net, images, num_imgs, img_sizes, labels, device)
 
                 for key in c_mats:
                     if key in conf_mats:
