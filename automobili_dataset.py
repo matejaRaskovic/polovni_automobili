@@ -34,8 +34,9 @@ class CarAdDataset(Dataset):
             csv_path (string): path to csv file
         """
         # Transforms
-        self.to_tensor = [transforms.ToTensor(),
-                          transforms.RandomHorizontalFlip(p=0.5)]
+        self.to_tensor = torch.nn.Sequential(
+                            transforms.ToTensor(),
+                            transforms.RandomHorizontalFlip(p=0.5))
         # Read the csv file
         self.data_info = pd.read_csv(csv_path, header=0)
 
