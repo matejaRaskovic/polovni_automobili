@@ -34,13 +34,22 @@ brands = ['volkswagen', 'bmw', 'peugeot', 'fiat', 'renault', 'mercedes-benz']
 #            ]
 
 # Dataset for interior color
-SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3837",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3836"]
+# SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3837",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3836"]
+#
+# NUM_ADS = [3200,  # this is how many of light color there are
+#            3200]
+#
+# URLS_FILE_NAME = "interior_color_dataset.txt"
 
-NUM_ADS = [3200,  # this is how many of light color there are
-           3200]
+# Dataset for seat material
+SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_material%5B0%5D=3831",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_material%5B0%5D=3830"]
 
-URLS_FILE_NAME = "interior_color_dataset.txt"
+NUM_ADS = [6000,  # this is how many of light color there are
+           6000]
+
+URLS_FILE_NAME = "seat_material_dataset.txt"
 
 def createHtmlFile(url, html_file="webpage.html"):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
