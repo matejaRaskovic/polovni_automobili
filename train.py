@@ -156,7 +156,7 @@ def main():
     for ith_epoch in trange(1, args.epochs + 1, desc='Epoch', unit='ep'):
 
         # # Train phase
-        # device = torch.device(arg_device)
+        device = torch.device(arg_device)
         # net.train()
         # iterator_train = iter(loader_train)
         # train_total_loss = 0
