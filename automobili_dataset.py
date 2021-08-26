@@ -10,6 +10,7 @@ from torch.utils.data import DataLoader
 import os
 from tqdm import trange
 from collections import namedtuple
+import random
 
 from features.car_body_feature import CarBodyFeature
 from features.seat_material_feature import SeatMaterialFeature
@@ -33,7 +34,8 @@ class CarAdDataset(Dataset):
             csv_path (string): path to csv file
         """
         # Transforms
-        self.to_tensor = transforms.ToTensor()
+        self.to_tensor = [transforms.ToTensor(),
+                          transforms.RandomHorizontalFlip(p=0.5)]
         # Read the csv file
         self.data_info = pd.read_csv(csv_path, header=0)
 
@@ -63,44 +65,29 @@ class CarAdDataset(Dataset):
         for feature in self.features:
             feature.calculateGradWeight(self.data_info)
 
-        # exit(1)
-
         self.data_info.to_csv('tmp_to_filter.csv', index=False)
         self.data_info = pd.read_csv('tmp_to_filter.csv', header=0)
         # First column contains the image paths
         self.ad_ids = np.asarray(self.data_info.iloc[:, 12].astype(str))
-        # print(len(self.ad_ids))
-
-
-        # print(self.ad_ids)
-        # Second column is the labels
-        # self.labels_str = np.asarray(self.data_info.iloc[:, 5])
-        # self.labels = np.zeros(self.labels_str.shape)
-        # self.labels = np.where(self.labels_str == 'Limuzina', 1, 0)
-
-        # self.labels = [float(lbl[:-2].replace('.', '')) for lbl in self.labels]
         # Calculate len
         self.data_len = len(self.data_info.index)
-        # self.data_info = self.data_info.reindex()
-        # print(self.data_info[10:20])
-        # exit(1)
         print(self.data_len)
         
     def __getitem__(self, index):
-        # print(index)
         ad_id = self.ad_ids[index]
-        # print(ad_id)
 
         fldr_pth = os.path.join('slike', ad_id)
         imgs = torch.FloatTensor(np.zeros((50, 3, 200, 200)))
         num_imgs = len(os.listdir(fldr_pth))
         i = 0
         img_sizes = np.zeros((50, 2))
-        for file in os.listdir(fldr_pth):
+        # here we do the random shuffle of files as augmentation
+        img_files = os.listdir(fldr_pth)
+        random.shuffle(img_files)
+        for file in img_files:
             file_pth = os.path.join(fldr_pth, file)
 
             img_as_img = Image.open(file_pth)
-            # print(img_as_img.size)
             if img_as_img.size[0] > img_as_img.size[1]:
                 scale = 200/img_as_img.size[0]
             else:
@@ -108,35 +95,17 @@ class CarAdDataset(Dataset):
             newsize = (int(round(img_as_img.size[0]*scale)), int(round(img_as_img.size[1]*scale)))
             img_sizes[i, 0] = newsize[0]
             img_sizes[i, 1] = newsize[1]
-            # print(newsize)
-            # newsize = (200, 150)
             img_as_img = img_as_img.resize(newsize)
             img_as_tensor = self.to_tensor(img_as_img)
             imgs[i, :, 0:newsize[1], 0:newsize[0]] = img_as_tensor
-            # if img_as_img.size[0] > img_as_img.size[1]:
-            #     pad1 = (200 - img_as_img.size[1])//2
-            #     pad2 = 200 - img_as_img.size[1] - pad1
-            #     imgs[i, :, pad1:200-pad2, :] = img_as_tensor
-            # else:
-            #     pad1 = (200 - img_as_img.size[0]) // 2
-            #     pad2 = 200 - img_as_img.size[0] - pad1
-            #     imgs[i, :, :, pad1:200 - pad2] = img_as_tensor
 
-            # imgs[i, :] = img_as_tensor
             i += 1
-            # print(i)
-        # exit(1)
 
         lbls_dict = {}
         for feature in self.features:
-            # print(index)
-            # print(self.data_info[feature.name()][40:60])
             lbls_dict[feature.name()] = [feature.nameToClassId(self.data_info[feature.name()][index]),
                                          feature.getWeightForSample(self.data_info[feature.name()][index])]
 
-            # print(lbls_dict[feature.name()])
-
-        # print(len(lbls_dict))
         return [imgs, num_imgs, lbls_dict, img_sizes]
 
     def __len__(self):
