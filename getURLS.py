@@ -33,7 +33,7 @@ brands = ['volkswagen', 'bmw', 'peugeot', 'fiat', 'renault', 'mercedes-benz']
 #            1000  # tamno untura, tamno van, stof
 #            ]
 
-# Dataset for interior color
+################ Dataset for interior color ################
 # SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3837",
 #                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_color%5B0%5D=3836"]
 #
@@ -42,14 +42,32 @@ brands = ['volkswagen', 'bmw', 'peugeot', 'fiat', 'renault', 'mercedes-benz']
 #
 # URLS_FILE_NAME = "interior_color_dataset.txt"
 
-# Dataset for seat material
-SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_material%5B0%5D=3831",
-               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_material%5B0%5D=3830"]
+################ Dataset for seat material ################
+# SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_material%5B0%5D=3831",
+#                "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&interior_material%5B0%5D=3830"]
+#
+# NUM_ADS = [6000,
+#            6000]
+#
+# URLS_FILE_NAME = "seat_material_dataset.txt"
 
-NUM_ADS = [6000,  # this is how many of light color there are
-           6000]
+################ Dataset for car color ################
+SEARCH_URLS = ["https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2578&color%5B1%5D=263",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=59",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=261",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=57",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=2573",
+               "https://www.polovniautomobili.com/auto-oglasi/pretraga?page=1&sort=basic&city_distance=0&showOldNew=all&without_price=1&color%5B0%5D=255"]
 
-URLS_FILE_NAME = "seat_material_dataset.txt"
+NUM_ADS = [550,  # narandzasta i zuta
+           1500,  # crvena
+           1000,  # zelena
+           1000,  # plava
+           4000,  # bela
+           4000  # crna
+           ]
+
+URLS_FILE_NAME = "car_color_dataset.txt"
 
 def createHtmlFile(url, html_file="webpage.html"):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
