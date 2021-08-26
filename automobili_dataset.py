@@ -21,8 +21,8 @@ class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
                 #CarBodyFeature(),
                 #SeatMaterialFeature(),
-                CarColorFeature(),
-                #InteriorColorFeature()
+                #CarColorFeature(),
+                InteriorColorFeature()
                 ]
 
     def __init__(self, csv_path):
@@ -51,7 +51,7 @@ class CarAdDataset(Dataset):
         # print(self.data_info['materijal_enterijera'].value_counts())
 
         # Use this for oversampling
-        do_oversampling = False
+        do_oversampling = True
         if do_oversampling:
             for feature in self.features:
                 max_size = self.data_info[feature.name()].value_counts().max()
