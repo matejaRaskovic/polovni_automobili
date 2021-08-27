@@ -129,6 +129,9 @@ class CarAdModel(nn.Module):
 
         feature_grid = self.feature_extractor(x)
         print(feature_grid.shape)
+        feature_grid = self.ghc(feature_grid)
+        print(feature_grid.shape)
+        exit(1)
 
         feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
         feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
