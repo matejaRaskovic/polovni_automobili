@@ -93,14 +93,14 @@ class CarAdModel(nn.Module):
 
         self.feature_extractor = Resnet(backbone)
 
-        self.rnn_img_cols = nn.LSTM(input_size=2560,  # 512 for resnet 18
-                                    hidden_size=self.rnn_hidden_size,
+        self.rnn_img_cols = nn.LSTM(input_size=1680,  # 512 for resnet 18
+                                    hidden_size=self.rnn_hidden_size//2,
                                     num_layers=2,
                                     dropout=0.5,
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2048,  # 512 for resnet 18
+        self.rnn_imgs = nn.LSTM(input_size=2048//2,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size//2,
                            num_layers=2,
                            dropout=0.5,
@@ -131,14 +131,14 @@ class CarAdModel(nn.Module):
         print(feature_grid.shape)
         feature_grid = self.ghc(feature_grid)
         print(feature_grid.shape)
-        exit(1)
+        # exit(1)
 
-        feature_grid = feature_grid.view((feature_grid.shape[0], 5*feature_grid.shape[1], feature_grid.shape[2], 1))
-        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2], feature_grid.shape[1]))
+        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2]*feature_grid.shape[1], 1, feature_grid.shape[3]))
+        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[3], feature_grid.shape[1]))
         feature_grid = feature_grid.to(x.device)
 
         rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
-        ht = ht.view((1, ht.shape[1], 2048))
+        ht = ht.view((1, ht.shape[1], 2048//2))
         # print(ht.shape)
 
 
