@@ -114,15 +114,11 @@ class CarAdModel(nn.Module):
         rnn_in_multiple = torch.zeros((10, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
         for i in range(10):
             rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
-        # print(rnn_in_multiple.shape)
-        # exit(1)
+
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_in_multiple)
         ht_tmp = ht[-2:].transpose(2, 1)
-        print(ht_tmp.shape)
         avg_pool = nn.AdaptiveAvgPool1d(1)
-        print(avg_pool(ht_tmp).shape)
         lin_input = torch.flatten(avg_pool(ht_tmp))
-        print(lin_input.shape)
         # print(ht.shape)
         # lin_input = torch.flatten(ht[-2:])
         output = self.linear(lin_input)
