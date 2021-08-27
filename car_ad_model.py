@@ -111,6 +111,8 @@ class CarAdModel(nn.Module):
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
         rnn_input = ht
+        print(rnn_input.shape)
+        exit(1)
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         # print(ht.shape)
         lin_input = torch.flatten(ht[-2:])
