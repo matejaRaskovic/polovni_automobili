@@ -28,6 +28,7 @@ class Resnet(nn.Module):
         x = self.encoder.maxpool(x)
 
         x = self.encoder.layer1(x)
+        print(x.shape)
         x = self.encoder.layer2(x)
         x = self.encoder.layer3(x)
         x = self.encoder.layer4(x)
