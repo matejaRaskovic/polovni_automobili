@@ -46,11 +46,13 @@ def download_images_for_url(car_ad_url_and_cnt):
     # i += 1
 
     t1 = time.time()
+    i = 1
     for url in pictures_urls:
         response = requests.get(url)
 
         os.makedirs(os.path.join('slike', car_id), exist_ok=True)
-        file = open(os.path.join('slike', car_id, os.path.basename(url)), "wb")
+        file = open(os.path.join('slike', car_id, str(i), '.jpg'), "wb")
+        i += 1
         file.write(response.content)
         file.close()
 
