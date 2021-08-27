@@ -85,7 +85,7 @@ class CarAdModel(nn.Module):
         x = self._prepare_x(x)
         img_sizes = img_sizes.cpu().detach().numpy().astype(int)
         # feature_grid = torch.zeros((x.shape[0], 512, 5, 5))
-        for i in range(x.shape[0]):
+        # for i in range(x.shape[0]):
             # print(self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]]).shape)
             # print(feature_grid[i:i+1, :].shape)
             # exit(1)
