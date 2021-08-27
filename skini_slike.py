@@ -4,6 +4,7 @@ import json
 import time
 import os
 import argparse
+import shutil
 
 from multiprocessing import Pool
 
@@ -23,7 +24,7 @@ def download_images_for_url(car_ad_url_and_cnt):
 
     # doing this to prevent donwloading already downloaded images
     if os.path.exists(os.path.join('slike', car_id)):
-        return
+        shutil.rmtree(os.path.join('slike', car_id))
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
