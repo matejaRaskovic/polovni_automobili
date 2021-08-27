@@ -10,6 +10,33 @@ ENCODER_RESNET = [
 ]
 
 
+class ConvCompressH(nn.Module):
+    ''' Reduce feature height by factor of two '''
+    def __init__(self, in_c, out_c, ks=3):
+        super(ConvCompressH, self).__init__()
+        assert ks % 2 == 1
+        self.layers = nn.Sequential(
+            nn.Conv2d(in_c, out_c, kernel_size=ks, stride=(2, 1), padding=ks//2),
+            nn.BatchNorm2d(out_c),
+            nn.ReLU(inplace=False),
+        )
+
+    def forward(self, x):
+        return self.layers(x)
+
+
+class GlobalHeightConv(nn.Module):
+    def __init__(self, in_c, out_c):
+        super(GlobalHeightConv, self).__init__()
+        self.layer = nn.Sequential(
+            ConvCompressH(in_c, in_c//2),
+            ConvCompressH(in_c//2, in_c//2),  # Use this to go back to height scale 8
+            ConvCompressH(in_c//2, out_c),
+        )
+
+    def forward(self, x):
+        return self.layer(x)
+
 class Resnet(nn.Module):
     def __init__(self, backbone='resnet18', pretrained=True):
         super(Resnet, self).__init__()
@@ -27,19 +54,21 @@ class Resnet(nn.Module):
         x = self.encoder.relu(x)
         x = self.encoder.maxpool(x)
 
+        feat_maps = []
         x = self.encoder.layer1(x)
-        print(x.shape)
+        feat_maps.append(x)
         x = self.encoder.layer2(x)
-        print(self.avgpool(x).shape)
+        feat_maps.append(self.avgpool(x))
         x = self.encoder.layer3(x)
-        print(self.avgpool(x).shape)
+        feat_maps.append(self.avgpool(x))
         x = self.encoder.layer4(x)
-        print(self.avgpool(x).shape)
+        feat_maps.append(self.avgpool(x))
 
-        print(x.shape)
-        x = self.avgpool(x)
+        return torch.cat(feat_maps, dim=1)
 
-        return x
+        # x = self.avgpool(x)
+        #
+        # return x
 
     def list_blocks(self):
         lst = [m for m in self.encoder.children()]
@@ -79,6 +108,8 @@ class CarAdModel(nn.Module):
                            bidirectional=True)
 
         self.linear = nn.Linear(in_features=2*self.rnn_hidden_size//2, out_features=100)
+
+        self.ghc = GlobalHeightConv(960, 960//4)
 
     def _prepare_x(self, x):
         if self.x_mean.device != x.device:
