@@ -119,7 +119,7 @@ class CarAdModel(nn.Module):
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_in_multiple)
         ht_tmp = ht[-2:].transpose(2, 1)
         print(ht_tmp.shape)
-        avg_pool = nn.AvgPool1d(1)
+        avg_pool = nn.AdaptiveAvgPool1d(1)
         print(avg_pool(ht_tmp).shape)
         lin_input = torch.flatten(avg_pool(ht_tmp))
         print(lin_input.shape)
