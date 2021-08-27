@@ -1,13 +1,19 @@
 import pandas as pd
 import numpy as np
 import os
+import argparse
 
-
-csv_path = '4_feature_dataset_cars.csv'
 imgs_fldr = 'slike'
 filter_without_images = True
 
 def main():
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--input_csv', required=True,
+                        help='path to the txt containing urls which should be visited')
+
+    args = parser.parse_args()
+    
+    csv_path = args.input_csv
     df = pd.read_csv(csv_path, header=0)
     valid_ads = []
     if filter_without_images:
