@@ -111,7 +111,7 @@ class CarAdModel(nn.Module):
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
         rnn_input = ht
-        rnn_in_multiple = torch.zeros((10, rnn_input.shape[1], rnn_input.shape[2])).to(device)
+        rnn_in_multiple = torch.zeros((10, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
         for i in range(10):
             rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
         print(rnn_in_multiple.shape)
