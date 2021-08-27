@@ -153,11 +153,11 @@ class CarAdModel(nn.Module):
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
         rnn_input = ht
-        rnn_in_multiple = torch.zeros((3, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
-        for i in range(3):
+        rnn_in_multiple = torch.zeros((1, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
+        for i in range(1):
             rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
 
-        rnn_output, (ht, ct) = self.rnn_imgs(rnn_in_multiple)
+        rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
         ht_tmp = ht[-2:].transpose(2, 1)
         avg_pool = nn.AdaptiveAvgPool1d(1)
         lin_input = torch.flatten(avg_pool(ht_tmp))

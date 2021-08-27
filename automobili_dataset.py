@@ -20,8 +20,8 @@ from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
-                CarBodyFeature(),
-                #SeatMaterialFeature(),
+                #CarBodyFeature(),
+                SeatMaterialFeature(),
                 #CarColorFeature(),
                 #InteriorColorFeature()
                 ]
@@ -84,7 +84,10 @@ class CarAdDataset(Dataset):
         img_sizes = np.zeros((50, 2))
         # here we do the random shuffle of files as augmentation
         img_files = os.listdir(fldr_pth)
-        random.shuffle(img_files)
+        
+        shuffle_imgs = False
+        if shuffle_imgs:
+            random.shuffle(img_files)
         for file in img_files:
             file_pth = os.path.join(fldr_pth, file)
 
