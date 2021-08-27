@@ -32,9 +32,9 @@ class Resnet(nn.Module):
         x = self.encoder.layer3(x)
         x = self.encoder.layer4(x)
 
-        x = self.avgpool(x)
         print(x.shape)
-        
+        x = self.avgpool(x)
+
         return x
 
     def list_blocks(self):
