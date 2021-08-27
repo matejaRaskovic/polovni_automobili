@@ -61,7 +61,7 @@ def main():
                              '(finetuning)')
     # Model related
     parser.add_argument('--feature_extractor', default='resnet18',
-                        choices=['resnet18', 'resnet50', 'resnet101', 'densenet121', 'resnext50_32x4d'],
+                        choices=['resnet18', 'resnet34', 'resnet50'],
                         help='backbone of the network')
     # Dataset related arguments
     parser.add_argument('--train_csv', default=None,

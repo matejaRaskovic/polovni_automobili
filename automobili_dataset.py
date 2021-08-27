@@ -20,10 +20,10 @@ from features.interior_color_feature import InteriorColorFeature
 
 class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
-                #CarBodyFeature(),
+                CarBodyFeature(),
                 #SeatMaterialFeature(),
                 #CarColorFeature(),
-                InteriorColorFeature()
+                #InteriorColorFeature()
                 ]
 
     def __init__(self, csv_path):
