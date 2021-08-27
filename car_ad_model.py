@@ -117,8 +117,11 @@ class CarAdModel(nn.Module):
         print(rnn_in_multiple.shape)
         # exit(1)
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_in_multiple)
-        print(ht.shape)
-        lin_input = torch.flatten(ht[-2:])
+        ht_tmp = ht[-2:].transpose((0, 2, 1))
+        avg_pool = nn.AvgPool1d(1)
+        lin_input = torch.flatten(avg_pool(ht_tmp))
+        # print(ht.shape)
+        # lin_input = torch.flatten(ht[-2:])
         output = self.linear(lin_input)
 
         output = output.view((10, 10))
