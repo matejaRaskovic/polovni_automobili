@@ -22,8 +22,8 @@ class CarAdDataset(Dataset):
     features = [#CarProducerFeature(),
                 #CarBodyFeature(),
                 #SeatMaterialFeature(),
-                CarColorFeature(),
-                #InteriorColorFeature()
+                #CarColorFeature(),
+                InteriorColorFeature()
                 ]
 
     def __init__(self, csv_path):
