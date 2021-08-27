@@ -17,7 +17,7 @@ class Resnet(nn.Module):
         self.encoder = getattr(models, backbone)(pretrained=pretrained)
         del self.encoder.fc, self.encoder.avgpool
 
-        self.avgpool = nn.AdaptiveAvgPool2d((5, 5))
+        self.avgpool = nn.AdaptiveAvgPool2d((50, 50))
 
     def forward(self, x):
         features = []
@@ -30,8 +30,11 @@ class Resnet(nn.Module):
         x = self.encoder.layer1(x)
         print(x.shape)
         x = self.encoder.layer2(x)
+        print(self.avgpool(x).shape)
         x = self.encoder.layer3(x)
+        print(self.avgpool(x).shape)
         x = self.encoder.layer4(x)
+        print(self.avgpool(x).shape)
 
         print(x.shape)
         x = self.avgpool(x)
