@@ -44,7 +44,7 @@ class Resnet(nn.Module):
         self.encoder = getattr(models, backbone)(pretrained=pretrained)
         del self.encoder.fc, self.encoder.avgpool
 
-        self.avgpool = nn.AdaptiveAvgPool2d((50, 50))
+        self.avgpool = nn.AdaptiveAvgPool2d((24, 24))
 
     def forward(self, x):
         features = []
@@ -56,7 +56,7 @@ class Resnet(nn.Module):
 
         feat_maps = []
         x = self.encoder.layer1(x)
-        feat_maps.append(x)
+        feat_maps.append(self.avgpool(x))
         x = self.encoder.layer2(x)
         feat_maps.append(self.avgpool(x))
         x = self.encoder.layer3(x)
@@ -93,7 +93,7 @@ class CarAdModel(nn.Module):
 
         self.feature_extractor = Resnet(backbone)
 
-        self.rnn_img_cols = nn.LSTM(input_size=1680,  # 512 for resnet 18
+        self.rnn_img_cols = nn.LSTM(input_size=720, #1680,  # 512 for resnet 18
                                     hidden_size=self.rnn_hidden_size//2,
                                     num_layers=2,
                                     dropout=0.5,
@@ -153,8 +153,8 @@ class CarAdModel(nn.Module):
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
         rnn_input = ht
-        rnn_in_multiple = torch.zeros((1, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
-        for i in range(1):
+        rnn_in_multiple = torch.zeros((10, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
+        for i in range(10):
             rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
 
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
@@ -168,3 +168,4 @@ class CarAdModel(nn.Module):
         output = output.view((10, 10))
 
         return output
+

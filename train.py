@@ -152,7 +152,7 @@ def main():
     scaler = torch.cuda.amp.GradScaler()
 
     # Learning rate scheduler
-    scheduler = ExponentialLR(optimizer, gamma=0.9)
+    scheduler = ExponentialLR(optimizer, gamma=0.8)
 
     # Init variable
     args.max_iters = args.epochs * len(loader_train)
