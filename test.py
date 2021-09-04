@@ -90,7 +90,7 @@ def main():
     net.load_state_dict(torch.load(args.pth, map_location=device))
 
     conf_mats = {}
-    net.eval()
+    net.train()
 
     iterator_test = iter(loader_test)
     total_test_loss = 0
