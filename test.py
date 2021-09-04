@@ -11,6 +11,8 @@ import torch
 from car_ad_model import CarAdModel
 from automobili_dataset import CarAdDataset
 
+from sklearn.metrics import classification_report
+
 torch.backends.cudnn.deterministic = True
 
 
@@ -46,11 +48,8 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
 def conf_mat_to_samples(conf_mat):
     gt = []
     est = []
-    print(conf_mat)
     for i in range(conf_mat.shape[0]):
-        print(i)
         for j in range(conf_mat.shape[1]):
-            print(j)
             for k in range(int(conf_mat[i, j])):
                 gt.append(i)
                 est.append(j)
@@ -126,10 +125,9 @@ def main():
 
     # HERE WE HAVE TO CALCULATE METRICS
     keys = [k for k in c_mats]
-    print(keys)
     gt, est = conf_mat_to_samples(conf_mats[keys[0]])
-    print(gt)
 
+    print(classification_report(gt, est))
 
 if __name__ == '__main__':
     main()
