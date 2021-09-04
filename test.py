@@ -107,7 +107,7 @@ def main():
         labels = next_data[2]
         img_sizes = next_data[3]
 
-        with torch.no_grad():
+        with torch.cuda.amp.autocast() and torch.no_grad():
             loss, c_mats = feed_forward(net, images, num_imgs, img_sizes, labels, device)
 
         for key in c_mats:
