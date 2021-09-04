@@ -124,6 +124,7 @@ def main():
 
     # HERE WE HAVE TO CALCULATE METRICS
     keys = [k for k in c_mats]
+    print(keys)
     gt, est = conf_mat_to_samples(c_mats[keys[0]])
     print(gt)
 
