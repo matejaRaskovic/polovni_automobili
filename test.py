@@ -122,7 +122,8 @@ def main():
         total_test_loss += loss.cpu().detach()
 
     # HERE WE HAVE TO CALCULATE METRICS
-    gt, est = conf_mat_to_samples(c_mats[0])
+    keys = [k for k in c_mats]
+    gt, est = conf_mat_to_samples(keys[0])
     print(gt)
 
 
