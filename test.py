@@ -46,6 +46,7 @@ def feed_forward(net, images, num_imgs, img_sizes, labels, device):
 def conf_mat_to_samples(conf_mat):
     gt = []
     est = []
+    print(conf_mat)
     for i in range(conf_mat.shape[0]):
         for j in range(conf_mat.shape[1]):
             for k in range(conf_mat[i, j]):
