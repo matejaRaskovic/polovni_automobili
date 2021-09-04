@@ -48,7 +48,9 @@ def conf_mat_to_samples(conf_mat):
     est = []
     print(conf_mat)
     for i in range(conf_mat.shape[0]):
+        print(i)
         for j in range(conf_mat.shape[1]):
+            print(j)
             for k in range(conf_mat[i, j]):
                 gt.append(i)
                 est.append(j)
@@ -125,7 +127,7 @@ def main():
     # HERE WE HAVE TO CALCULATE METRICS
     keys = [k for k in c_mats]
     print(keys)
-    gt, est = conf_mat_to_samples(c_mats[keys[0]])
+    gt, est = conf_mat_to_samples(conf_mats[keys[0]])
     print(gt)
 
 
