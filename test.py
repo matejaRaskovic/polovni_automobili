@@ -51,7 +51,7 @@ def conf_mat_to_samples(conf_mat):
         print(i)
         for j in range(conf_mat.shape[1]):
             print(j)
-            for k in range(conf_mat[i][j]):
+            for k in range(int(conf_mat[i, j])):
                 gt.append(i)
                 est.append(j)
 
