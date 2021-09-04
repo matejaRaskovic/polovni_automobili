@@ -77,11 +77,10 @@ def main():
 
     arg_device = 'cpu' if args.no_cuda else 'cuda:' + str(args.gpu_id)
     device = torch.device('cpu' if args.no_cuda else 'cuda:' + str(args.gpu_id))
-    os.makedirs(os.path.join(args.ckpt, args.id), exist_ok=True)
 
     # Create dataloader
     dataset_test = CarAdDataset(args.test_csv)  # FLIPPING CAN BE ADDED
-    loader_test = DataLoader(dataset_test, args.batch_size_train,
+    loader_test = DataLoader(dataset_test, 5,
                               shuffle=True, drop_last=True,
                               num_workers=args.num_workers,
                               pin_memory=not args.no_cuda,
