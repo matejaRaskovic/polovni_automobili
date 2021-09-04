@@ -77,8 +77,6 @@ def main():
 
     arg_device = 'cpu' if args.no_cuda else 'cuda:' + str(args.gpu_id)
     device = torch.device('cpu' if args.no_cuda else 'cuda:' + str(args.gpu_id))
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
     os.makedirs(os.path.join(args.ckpt, args.id), exist_ok=True)
 
     # Create dataloader
