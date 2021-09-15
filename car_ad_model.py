@@ -124,17 +124,18 @@ class CarAdModel(nn.Module):
             # feature_grid[i:i+1, :] = self.feature_extractor(x[i:i+1, :, 0:img_sizes[i, 1], 0:img_sizes[i, 0]])
 
         feature_grid = self.feature_extractor(x)
+
         # print(feature_grid.shape)
-        feature_grid = self.ghc(feature_grid)
+        # feature_grid = self.ghc(feature_grid)
         # print(feature_grid.shape)
         # exit(1)
 
-        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2]*feature_grid.shape[1], 1, feature_grid.shape[3]))
-        feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[3], feature_grid.shape[1]))
-        feature_grid = feature_grid.to(x.device)
+        # feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[2]*feature_grid.shape[1], 1, feature_grid.shape[3]))
+        # feature_grid = feature_grid.view((feature_grid.shape[0], feature_grid.shape[3], feature_grid.shape[1]))
+        # feature_grid = feature_grid.to(x.device)
 
-        rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
-        ht = ht.view((1, ht.shape[1], 2048//2))
+        # rnn_output, (ht, ct) = self.rnn_img_cols(feature_grid)
+        # ht = ht.view((1, ht.shape[1], 2048//2))
         # print(ht.shape)
 
 
@@ -148,12 +149,14 @@ class CarAdModel(nn.Module):
 
         # rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
-        rnn_input = ht
-        rnn_in_multiple = torch.zeros((10, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
-        for i in range(10):
-            rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
+        # rnn_input = ht
+        # rnn_in_multiple = torch.zeros((10, rnn_input.shape[1], rnn_input.shape[2])).to(rnn_input.device)
+        # for i in range(10):
+        #     rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
 
-        rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
+        print(feature_grid.shape)
+        
+        rnn_output, (ht, ct) = self.rnn_imgs(feature_grid)
         ht_tmp = ht[-2:].transpose(2, 1)
         avg_pool = nn.AdaptiveAvgPool1d(1)
         lin_input = torch.flatten(avg_pool(ht_tmp))
