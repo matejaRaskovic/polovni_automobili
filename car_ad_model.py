@@ -92,7 +92,7 @@ class CarAdModel(nn.Module):
                                     batch_first=True,
                                     bidirectional=True)
 
-        self.rnn_imgs = nn.LSTM(input_size=2048//2,  # 512 for resnet 18
+        self.rnn_imgs = nn.LSTM(input_size=512,  # 512 for resnet 18
                            hidden_size=self.rnn_hidden_size//2,
                            num_layers=2,
                            dropout=0.5,
