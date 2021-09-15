@@ -66,10 +66,6 @@ class Resnet(nn.Module):
 
         return torch.cat(feat_maps, dim=1)
 
-        # x = self.avgpool(x)
-        #
-        # return x
-
     def list_blocks(self):
         lst = [m for m in self.encoder.children()]
         block0 = lst[:4]
