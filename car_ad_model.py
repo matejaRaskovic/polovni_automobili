@@ -44,7 +44,7 @@ class Resnet(nn.Module):
         self.encoder = getattr(models, backbone)(pretrained=pretrained)
         del self.encoder.fc, self.encoder.avgpool
 
-        self.avgpool = nn.AdaptiveAvgPool2d((24, 24))
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
     def forward(self, x):
         features = []
@@ -54,17 +54,13 @@ class Resnet(nn.Module):
         x = self.encoder.relu(x)
         x = self.encoder.maxpool(x)
 
-        feat_maps = []
         x = self.encoder.layer1(x)
-        feat_maps.append(self.avgpool(x))
         x = self.encoder.layer2(x)
-        feat_maps.append(self.avgpool(x))
         x = self.encoder.layer3(x)
-        feat_maps.append(self.avgpool(x))
         x = self.encoder.layer4(x)
-        feat_maps.append(self.avgpool(x))
 
-        return torch.cat(feat_maps, dim=1)
+        return self.avgpool(x)
+
 
     def list_blocks(self):
         lst = [m for m in self.encoder.children()]
@@ -155,7 +151,7 @@ class CarAdModel(nn.Module):
         #     rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
 
         print(feature_grid.shape)
-        
+
         rnn_output, (ht, ct) = self.rnn_imgs(feature_grid)
         ht_tmp = ht[-2:].transpose(2, 1)
         avg_pool = nn.AdaptiveAvgPool1d(1)
