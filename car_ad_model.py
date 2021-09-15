@@ -150,8 +150,6 @@ class CarAdModel(nn.Module):
         # for i in range(10):
         #     rnn_in_multiple[i:i+1] = rnn_input[:, torch.randperm(rnn_input.shape[1])]
 
-        print(feature_grid.shape)
-
         rnn_input = feature_grid.view(feature_grid.shape[0], 1, 512)
 
         rnn_output, (ht, ct) = self.rnn_imgs(rnn_input)
